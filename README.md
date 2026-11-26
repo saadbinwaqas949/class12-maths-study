@@ -2,6 +2,8 @@
 
 A study website for **Class 12 Mathematics** (Punjab Curriculum and Textbook Board, used by BISE Lahore), built for the **2026–27 syllabus**. The portions that the board removed from the syllabus are not included anywhere on the site.
 
+**Live site:** <https://saadbinwaqas949.github.io/class12-maths-study/> (GitHub Pages, deployed from `main`; every push updates it within a minute or two).
+
 ## What it does
 
 - **Three modes, switchable at any moment** (header switch or keys `1` `2` `3`), without reloading or losing your place:
