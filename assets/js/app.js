@@ -59,7 +59,9 @@
   function toast(msg) {
     const t = document.createElement('div');
     t.className = 'toast';
-    t.innerHTML = msg;
+    // keep the text in one flex item, so a narrow screen wraps it as a sentence (a leading icon stays separate)
+    const m = /^(<svg[\s\S]*?<\/svg>)([\s\S]*)$/.exec(msg);
+    t.innerHTML = m ? `${m[1]}<span>${m[2]}</span>` : `<span>${msg}</span>`;
     $('#toasts').appendChild(t);
     setTimeout(() => t.classList.add('out'), 2200);
     setTimeout(() => t.remove(), 2700);
@@ -162,14 +164,80 @@
       <div class="search">
         ${icon('search')}<input id="q" type="search" placeholder="Search questions or topics" autocomplete="off" spellcheck="false" aria-label="Search"/>
         <kbd>/</kbd>
+        <button class="search-cancel" data-act="search-close" type="button">Cancel</button>
         <div class="search-res" id="searchRes" hidden></div>
       </div>
+      <button class="hdr-btn" data-act="search-open" type="button" aria-label="Search">${icon('search')}</button>
       <div class="modesw" role="radiogroup" aria-label="Study mode">
         ${Object.keys(MODES).map((k, i) => `<button role="radio" aria-checked="${k === m}" class="mbtn ${k === m ? 'on' : ''}" data-act="mode" data-m="${k}" title="${esc(MODES[k].desc)} (key ${i + 1})">${icon(MODES[k].icon)}<span>${MODES[k].short}</span></button>`).join('')}
         <span class="mglide"></span>
       </div>
     </div>`;
   }
+  const TABS = [['home', '#/', 'grid', 'Units'], ['concepts', '#/concepts', 'book', 'Topics'], ['quiz', '#/quiz', 'quiz', 'Quiz'], ['mock', '#/mock', 'paper', 'Mock'], ['progress', '#/progress', 'check', 'Progress']];
+  const tabbarHTML = () => TABS.map(([k, h, ic, label]) => `<a href="${h}" data-tab="${k}">${icon(ic)}<span>${label}</span></a>`).join('');
+  const tabOf = (r) => (r === 'unit' || r === 'q' || r === 'home' || r === 'welcome' ? 'home' : r === 'concept' ? 'concepts' : r);
+
+  /* ---- phone: topic sheet (bottom sheet) and full-width search ---- */
+  const phoneMQ = window.matchMedia('(max-width: 900px)');
+  const compactMQ = window.matchMedia('(max-width: 600px)');
+  const isPhone = () => phoneMQ.matches;
+  M.compact = compactMQ.matches; // smaller plot canvas, so graph labels stay readable
+  let sheetOpen = false;
+  function setSheet(open) {
+    sheetOpen = open;
+    document.body.classList.toggle('sheet-open', open);
+    const side = $('.qside');
+    if (side) { side.style.transform = ''; side.setAttribute('aria-hidden', String(!open && isPhone())); }
+  }
+  // opening the sheet adds a history entry, so the phone's back button closes it
+  function openSheet() {
+    if (sheetOpen || !isPhone()) return;
+    setSheet(true);
+    try { history.pushState({ m12sheet: 1 }, ''); } catch (e) { /* ignore */ }
+    const inner = $('.qside .side-inner');
+    if (inner) inner.scrollTop = 0;
+  }
+  function closeSheet() {
+    if (!sheetOpen) return;
+    setSheet(false);
+    if (history.state && history.state.m12sheet) history.back();
+  }
+  window.addEventListener('popstate', (e) => {
+    const want = !!(e.state && e.state.m12sheet) && isPhone() && parts()[0] === 'q';
+    if (want !== sheetOpen) setSheet(want);
+  });
+  // drag the sheet down (by its handle, or from the top of its content) to close it
+  let drag = null;
+  document.addEventListener('touchstart', (e) => {
+    const grab = e.target.closest('.sheet-grab');
+    const inner = e.target.closest('.qside .side-inner');
+    if (!sheetOpen || !(grab || (inner && inner.scrollTop <= 0))) return;
+    drag = { y: e.touches[0].clientY, dy: 0, fromGrab: !!grab };
+  }, { passive: true });
+  document.addEventListener('touchmove', (e) => {
+    if (!drag) return;
+    drag.dy = Math.max(0, e.touches[0].clientY - drag.y);
+    if (!drag.fromGrab && drag.dy < 12) return; // let a normal scroll start first
+    const side = $('.qside');
+    if (side) { side.style.transition = 'none'; side.style.transform = `translateY(${drag.dy}px)`; }
+  }, { passive: true });
+  document.addEventListener('touchend', () => {
+    if (!drag) return;
+    const side = $('.qside');
+    const far = drag.dy > 90;
+    drag = null;
+    if (side) { side.style.transition = ''; side.style.transform = ''; }
+    if (far) closeSheet();
+  });
+  function closeSearch() {
+    document.body.classList.remove('searching');
+    const q = $('#q');
+    if (q) { q.value = ''; q.blur(); }
+    const b = $('#searchRes');
+    if (b) b.hidden = true;
+  }
+
   function syncHeader() {
     const m = S.mode || 'study';
     $$('.mbtn').forEach((b) => { const on = b.dataset.m === m; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
@@ -178,6 +246,8 @@
     if (on && gl) { gl.style.width = on.offsetWidth + 'px'; gl.style.transform = `translateX(${on.offsetLeft - 4}px)`; }
     const r = (location.hash.slice(2).split('/')[0] || 'home');
     $$('.nav a').forEach((a) => a.classList.toggle('on', a.dataset.nav === r || (r === 'unit' && a.dataset.nav === 'home') || (r === 'q' && a.dataset.nav === 'home') || (r === 'concept' && a.dataset.nav === 'concepts')));
+    const t = tabOf(r);
+    $$('#tabbar a').forEach((a) => a.classList.toggle('on', a.dataset.tab === t));
   }
 
   /* ================= router ================= */
@@ -189,7 +259,14 @@
     if (qm && S.mode !== qm[1]) { S.mode = qm[1]; save(); setModeAttr(); syncHeader(); }
     const p = parts();
     // "#/q/<id>?p=1" opens a question straight in practice mode
-    if (p[0] === 'q' && /[?&]p=1\b/.test(location.hash)) UI.practice[p[1]] = true;
+    const qp = /[?&]p=1\b/.test(location.hash);
+    if (p[0] === 'q' && qp) UI.practice[p[1]] = true;
+    // a link's mode / practice setting applies once, on arrival; drop it from the address so a later switch isn't undone
+    if (qm || qp) {
+      const [path, query] = location.hash.split('?');
+      const rest = (query || '').split('&').filter((kv) => kv && !/^(m|p)=/.test(kv)).join('&');
+      try { history.replaceState(history.state, '', path + (rest ? '?' + rest : '')); } catch (e) { /* ignore */ }
+    }
     const routeKey = p.join('/');
     const changed = routeKey !== lastRoute;
     lastRoute = routeKey;
@@ -211,6 +288,9 @@
     const keep = opts.keep ? captureAnchor() : null;
     main.innerHTML = `<div class="view ${changed && !opts.keep ? 'enter' : ''}">${html}</div>`;
     document.body.classList.toggle('is-welcome', p[0] === 'welcome');
+    document.body.classList.toggle('has-qbar', p[0] === 'q' && !!M.questions[p[1]]);
+    document.body.classList.toggle('is-quizrun', p[0] === 'quiz' && p[1] === 'run');
+    if (sheetOpen && p[0] !== 'q') setSheet(false);
     if (keep) restoreAnchor(keep, opts.flash); else if (changed) jump(0);
     syncHeader();
     afterRender(p);
@@ -247,7 +327,25 @@
   }
   // instant scroll (the page uses smooth scrolling for links, but re-renders must not animate)
   function jump(y) { window.scrollTo({ top: y, behavior: 'instant' }); }
+  // An inline formula that cannot break across lines and is wider than its line (common on phones)
+  // gets its own sideways-scrolling box, so it never makes the whole page wider than the screen.
+  function fitMath(root) {
+    const scope = root || $('#main');
+    if (!scope) return;
+    const list = scope.querySelectorAll('.katex');
+    for (const k of list) {
+      if (k.closest('.katex-display')) continue;
+      k.classList.remove('kx-wide');
+      const box = k.parentElement && k.parentElement.closest('p, li, td, th, div, .opt-t, .qr-text, b, span.cp-pre, figcaption');
+      if (!box) continue;
+      if (k.getBoundingClientRect().width > box.clientWidth + 1) k.classList.add('kx-wide');
+    }
+  }
+  let fitTimer = null;
+  window.addEventListener('resize', () => { clearTimeout(fitTimer); fitTimer = setTimeout(() => fitMath(document.body), 150); });
+
   function afterRender(p) {
+    fitMath($('#main'));
     document.title = (p[0] === 'q' && M.questions[p[1]] ? `Q ${M.questions[p[1]].no} · Ex ${M.questions[p[1]].ex}` : p[0] === 'concept' && C(p[1]) ? ctPlain(p[1]) : p[0] === 'unit' && M.unitByNo[p[1]] ? `Unit ${p[1]}: ${M.unitByNo[p[1]].title}` : 'Maths 12') + ' · Maths 12 Study';
     if (p[0] === 'quiz' && p[1] === 'run') startQuizTimer();
   }
@@ -399,6 +497,12 @@
     const topics = qTopics(q);
     const prac = !!UI.practice[id];
     const exo = u && u.exercises.find((e) => e.id === q.ex);
+    const toLearn = topics.filter((t) => !S.known[t]).length;
+    const qbar = `<div class="qbar">
+      ${nb.prev ? `<a class="qb-btn" href="#/q/${nb.prev}" aria-label="Previous question">${icon('left')}<span>Prev</span></a>` : `<span class="qb-btn off" aria-hidden="true">${icon('left')}<span>Prev</span></span>`}
+      <button class="qb-topics" data-act="sheet-open" type="button">${icon('bulb')}Topics<i>${toLearn}</i></button>
+      ${nb.next ? `<a class="qb-btn" href="#/q/${nb.next}" aria-label="Next question"><span>Next</span>${icon('right')}</a>` : `<span class="qb-btn off" aria-hidden="true"><span>Next</span>${icon('right')}</span>`}
+    </div>`;
     return `
     <div class="crumbs"><a href="#/">Units</a><span>/</span><a href="#/unit/${q.unit}">Unit ${q.unit}</a><span>/</span>Exercise ${esc(q.ex)}<span>/</span>Q ${esc(q.no)}</div>
     <section class="qhead card" data-anchor="head">
@@ -424,8 +528,9 @@
         ${S.mode === 'deep' ? pathHTML(q, topics) : ''}
         <div id="solution">${solutionHTML(q)}</div>
       </div>
-      <aside class="qside"><div class="side-inner">${sideHTML(q, topics)}</div></aside>
-    </div>`;
+      <aside class="qside" aria-label="Topics in this question"${isPhone() && !sheetOpen ? ' aria-hidden="true"' : ''}><div class="side-inner"><div class="sheet-grab"><span></span><button class="sheet-close" data-act="sheet-close" type="button" aria-label="Close topics">✕</button></div>${sideHTML(q, topics)}</div></aside>
+    </div>
+    ${qbar}`;
   }
 
   /* ---- deep-study foundations path ---- */
@@ -457,7 +562,7 @@
           const why = stepUse[cid] ? `Used directly in step${stepUse[cid].length > 1 ? 's' : ''} ${stepUse[cid].join(', ')}.` : needFor[cid] ? `Needed to understand ${needFor[cid].map((x) => '<b>' + ctH(x) + '</b>').join(', ')}.` : 'A topic this question relies on.';
           return `<article class="path-card ${state}" data-anchor="p-${cid}">
             <div class="pc-h" data-act="path-goto" data-i="${i}"><span class="pc-n">${state === 'done' ? icon('check') : i + 1}</span><span class="pc-t">${tH(c.title)}</span><span class="pc-u">${unitName(c.unit)}</span></div>
-            ${state === 'cur' ? `<div class="pc-why">${why}</div>${(() => { const deeper = c.pre.filter((x) => C(x) && !items.includes(x) && !S.known[x]); return deeper.length ? `<div class="pc-more"><span>Builds on</span>${deeper.map((x) => `<button class="chip" data-act="topic-open" data-c="${x}">${ctH(x)}</button>`).join('')}<em>Need these too? Open them on the right.</em></div>` : ''; })()}<div class="pc-body">${conceptBody(c, 'deep')}</div>
+            ${state === 'cur' ? `<div class="pc-why">${why}</div>${(() => { const deeper = c.pre.filter((x) => C(x) && !items.includes(x) && !S.known[x]); return deeper.length ? `<div class="pc-more"><span>Builds on</span>${deeper.map((x) => `<button class="chip" data-act="topic-open" data-c="${x}">${ctH(x)}</button>`).join('')}<em>Need these too? Tap one to open it.</em></div>` : ''; })()}<div class="pc-body">${conceptBody(c, 'deep')}</div>
             <div class="pc-act"><button class="btn primary" data-act="path-next">I understand, next ${icon('right')}</button><button class="btn ghost" data-act="path-know" data-c="${cid}">I already know this</button><button class="btn ghost" data-act="path-skip">Skip to the solution</button></div>` : ''}
           </article>`;
         }).join('')}
@@ -479,7 +584,7 @@
     for (const cid of st.c) {
       const c = C(cid);
       if (!c) continue;
-      h += `<div class="cmini"><div class="cmini-h">${icon('bulb')}Topic used: <b>${tH(c.title)}</b></div>${md(c.R)}${!st.d && mode !== 'review' && c.B ? `<div class="cmini-b">${md(c.B)}</div>` : ''}${c.F && !st.d ? `<div class="c-formula small">${md(c.F)}</div>` : ''}<button class="link" data-act="topic-open" data-c="${cid}">Open this topic on the right ${icon('right')}</button></div>`;
+      h += `<div class="cmini"><div class="cmini-h">${icon('bulb')}Topic used: <b>${tH(c.title)}</b></div>${md(c.R)}${!st.d && mode !== 'review' && c.B ? `<div class="cmini-b">${md(c.B)}</div>` : ''}${c.F && !st.d ? `<div class="c-formula small">${md(c.F)}</div>` : ''}<button class="link" data-act="topic-open" data-c="${cid}">Open this topic ${icon('right')}</button></div>`;
     }
     if (!h) h = `<div class="d-text muted">${st.w ? md(st.w) : 'This step is direct arithmetic or algebra on the previous line: simplify carefully and compare term by term.'}</div>`;
     return h;
@@ -511,10 +616,10 @@
       const hint = UI.hinted[q.id] || {};
       const items = q.steps.map((st, i) => {
         if (i < rev) return stepHTML(q, st, i, mode === 'review' ? 'study' : mode);
-        return `<li class="step locked" data-anchor="s-${i}"><div class="s-num">${i + 1}</div><div class="s-body"><div class="s-hidden">Step ${i + 1} is hidden. Work it out in your notebook.</div>${hint[i] ? `<div class="s-hint">${icon('bulb')}<div>${md(q.steps[i].w || 'Think about which topic on the right applies here.')}</div></div>` : ''}</div></li>`;
+        return `<li class="step locked" data-anchor="s-${i}"><div class="s-num">${i + 1}</div><div class="s-body"><div class="s-hidden">Step ${i + 1} is hidden. Work it out in your notebook.</div>${hint[i] ? `<div class="s-hint">${icon('bulb')}<div>${md(q.steps[i].w || (isPhone() ? 'Think about which topic (under Topics) applies here.' : 'Think about which topic on the right applies here.'))}</div></div>` : ''}</div></li>`;
       }).join('');
       return `<section class="sol practice">
-        <div class="prac-banner">${icon('pen')}<div><b>Practice mode.</b> Solve it in your notebook first. The topics on the right stay open to help you if you get stuck.</div></div>
+        <div class="prac-banner">${icon('pen')}<div><b>Practice mode.</b> Solve it in your notebook first. ${isPhone() ? 'If you get stuck, tap <b>Topics</b> at the bottom.' : 'The topics on the right stay open to help you if you get stuck.'}</div></div>
         <ol class="steps">${items}</ol>
         <div class="prac-actions">
           ${rev < n ? `<button class="btn" data-act="hint">${icon('bulb')}Hint for step ${rev + 1}</button><button class="btn" data-act="reveal">${icon('eye')}Reveal step ${rev + 1}</button><button class="btn ghost" data-act="reveal-all">Show full solution</button>` : ''}
@@ -844,7 +949,7 @@
     if (!q) return;
     const keep = captureAnchor();
     const sol = $('#solution');
-    if (sol) sol.innerHTML = solutionHTML(q);
+    if (sol) { sol.innerHTML = solutionHTML(q); fitMath(sol); }
     restoreAnchor(keep);
   }
   function refreshQuestion() { render({ keep: true }); }
@@ -878,9 +983,16 @@
       const det = card.closest('details');
       if (det) det.open = true;
       card.classList.add('open', 'flash');
-      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      if (isPhone()) {
+        openSheet();
+        setTimeout(() => { const inner = $('.qside .side-inner'); if (inner) inner.scrollTop = Math.max(0, card.offsetTop - 50); }, 60);
+      } else card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       setTimeout(() => card.classList.remove('flash'), 1200);
     },
+    'sheet-open': () => openSheet(),
+    'sheet-close': () => closeSheet(),
+    'search-open': () => { document.body.classList.add('searching'); setTimeout(() => { const q = $('#q'); if (q) q.focus(); }, 30); },
+    'search-close': () => closeSearch(),
     know: (el) => {
       const id = el.dataset.c;
       S.known[id] = !S.known[id];
@@ -890,6 +1002,13 @@
       $$(`[data-act="know"][data-c="${id}"]`).forEach((b) => { b.classList.toggle('on', k); b.innerHTML = k ? icon('check') + 'Known' : 'I know this'; });
       $$(`.tcard[data-c="${id}"], .lp-item`).forEach((c) => { if (c.classList.contains('tcard') || $(`[data-c="${id}"]`, c)) c.classList.toggle('known', k); });
       if (k) { UI.openTopics[id] = false; $$(`.tcard[data-c="${id}"]`).forEach((c) => c.classList.remove('open')); }
+      const cq = currentQ();
+      if (cq) {
+        const ts = qTopics(cq), left = ts.filter((t) => !S.known[t]).length;
+        const sh = $('.side-h span'), badge = $('.qb-topics i');
+        if (sh) sh.textContent = `${left} to learn · ${ts.length - left} known`;
+        if (badge) badge.textContent = left;
+      }
       toast(k ? `Marked <b>${ctH(id)}</b> as known` : `<b>${ctH(id)}</b> is back on your list`);
       if (S.mode === 'deep' && currentQ() && el.closest('.path')) refreshQuestion();
     },
@@ -992,8 +1111,22 @@
       if (e.key === 'Enter') { if (z.i < z.items.length - 1) actions['quiz-move']({ dataset: { d: 1 } }); else actions['quiz-finish'](); }
     }
   });
-  window.addEventListener('hashchange', () => { const b = $('#searchRes'); if (b) b.hidden = true; render(); });
+  window.addEventListener('hashchange', () => {
+    const b = $('#searchRes');
+    if (b) b.hidden = true;
+    if (document.body.classList.contains('searching')) closeSearch();
+    // leaving the question (or arriving on a history entry without the sheet) closes the sheet
+    if (sheetOpen && !(history.state && history.state.m12sheet)) setSheet(false);
+    render();
+  });
   window.addEventListener('resize', syncHeader);
+  const onBreakpoint = () => {
+    M.compact = compactMQ.matches;
+    if (!isPhone() && sheetOpen) setSheet(false);
+    render({ keep: true });
+  };
+  phoneMQ.addEventListener('change', onBreakpoint);
+  compactMQ.addEventListener('change', onBreakpoint);
 
   /* ================= boot ================= */
   function boot() {
@@ -1001,6 +1134,8 @@
     computeLeadsTo();
     setModeAttr();
     $('#hdr').innerHTML = headerHTML();
+    $('#tabbar').innerHTML = tabbarHTML();
+    if (history.state && history.state.m12sheet) history.replaceState(null, ''); // never start with the sheet open
     render();
     if (M.errors.length) console.warn('[content]', M.errors);
     requestAnimationFrame(() => document.body.classList.add('ready'));

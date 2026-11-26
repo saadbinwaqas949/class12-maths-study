@@ -35,7 +35,8 @@
   }
 
   M12.plot = function (spec) {
-    const W = spec.w || 560, H = spec.h || 360, pad = 34;
+    // phones draw on a smaller canvas so that labels stay readable once the graph is scaled to the screen
+    const W = spec.w || (M12.compact ? 420 : 560), H = spec.h || (M12.compact ? 320 : 360), pad = M12.compact ? 30 : 34;
     const [x0, x1] = (spec.x || [-5, 5]).map(num);
     const [y0, y1] = (spec.y || [-5, 5]).map(num);
     const sx = (x) => pad + ((x - x0) / (x1 - x0)) * (W - 2 * pad);

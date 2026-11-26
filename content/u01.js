@@ -368,7 +368,7 @@ $$\frac{\cosh^2x}{\cosh^2x}-\frac{\sinh^2x}{\cosh^2x}=\frac1{\cosh^2x}$$
 S: Use $\dfrac{\sinh x}{\cosh x}=\tanh x$ and $\dfrac{1}{\cosh x}=\sech x$: $\ 1-\tanh^2x=\sech^2x$. $\blacksquare$
 C: u1-hyperbolic
 A: Dividing $\cosh^2x-\sinh^2x=1$ by $\cosh^2x$ gives $1-\tanh^2x=\sech^2x$.
-H: Want an exponentials-only proof of the master identity? It is in the topic **Hyperbolic identities** on the right.
+H: Want an exponentials-only proof of the master identity? It is in the topic **Hyperbolic identities**, listed under this question's topics.
 
 #Q 1.2 7(ii)
 Q: Prove the identity $\csch^2x=\coth^2x-1$.

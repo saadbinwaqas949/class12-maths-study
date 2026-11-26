@@ -15,6 +15,7 @@ A study website for **Class 12 Mathematics** (Punjab Curriculum and Textbook Boa
 - **Concept library**: every topic from basic algebra and trigonometry up to each unit, adapted to the current mode.
 - **Quiz**: board-style MCQs with explanations, including a 20-question quiz that follows the paper pattern's unit split, unit quizzes, quick checks per question, and a "revise my weak topics" mode.
 - **Mock paper**: a full paper on the board pattern built from the included exercise questions, printable, with links to each solution.
+- **Phone and tablet layout** (screens up to 900px wide): a bottom tab bar for the sections; on a question, a bottom bar with Prev / Topics / Next, where the topics open in a sheet that closes with ✕, a tap outside, a downward swipe or the phone's back button. Search opens full width, graphs are drawn on a smaller canvas so their labels stay readable, and a formula too wide for the screen scrolls sideways inside its own box instead of the page.
 - Progress (done, starred, known topics, quiz history) is saved in the browser.
 
 ## Run it
