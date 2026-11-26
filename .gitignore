@@ -1,0 +1,7 @@
+# Local reference material (book scans, board notices) is not part of the site
+Recources/
+node_modules/
+.DS_Store
+Thumbs.db
+*.log
+.claude/settings.local.json
