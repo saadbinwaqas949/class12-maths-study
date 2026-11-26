@@ -471,7 +471,6 @@ A: $\csch^{-1}x=\ln\left(\frac1x+\sqrt{\frac1{x^2}+1}\right)$ for all $x\ne0$.
 
 #Q 1.3 2(i)
 Q: Let $f(x)=\sin^{-1}x$. State the domain and range of $f$ and $f^{-1}$.
-N: Parts (ii) and (iii) of this question ask for graphs of the inverse sine function. The board removed graphs of inverse trigonometric functions from the 2026–27 syllabus, so only part (i) is covered here.
 T: u9-inverse-trig, f-inverse-fn
 S: $f(x)=\sin^{-1}x$ is the inverse of the sine function restricted to $\left[-\frac\pi2,\frac\pi2\right]$, the interval on which sine is one-to-one and takes every value from $-1$ to $1$ exactly once.
 C: u9-inverse-trig
@@ -480,6 +479,37 @@ S: The inverse of $f$ is $f^{-1}(x)=\sin x$ on $\left[-\frac\pi2,\frac\pi2\right
 W: A function and its inverse swap their domain and range.
 C: f-inverse-fn
 A: $f$: domain $[-1,1]$, range $\left[-\frac\pi2,\frac\pi2\right]$. $\ f^{-1}(x)=\sin x$: domain $\left[-\frac\pi2,\frac\pi2\right]$, range $[-1,1]$.
+
+#Q 1.3 2(ii)
+Q: Let $f(x)=\sin^{-1}x$. Sketch the graph of $f$ and show that it is one-to-one using the horizontal line test.
+T: u1-inverse-graph, u9-inverse-trig, u9-principal-value
+S: Make a table of values for $x$ in the domain $[-1,1]$:
+| $x$ | $-1$ | $-\frac12$ | $0$ | $\frac12$ | $1$ |
+| --- | --- | --- | --- | --- | --- |
+| $\sin^{-1}x$ | $-\frac\pi2\approx-1.57$ | $-\frac\pi6\approx-0.52$ | $0$ | $\frac\pi6\approx0.52$ | $\frac\pi2\approx1.57$ |
+W: Each value is the angle in $\left[-\frac\pi2,\frac\pi2\right]$ whose sine is $x$; for example $\sin\frac\pi6=\frac12$.
+C: u9-principal-value
+S: Plot the points and join them with a smooth curve. It starts at $\left(-1,-\frac\pi2\right)$, passes through the origin and ends at $\left(1,\frac\pi2\right)$. It rises all the way and is steepest near the two ends. Nothing is drawn outside $-1\le x\le1$, because $f$ is not defined there.
+C: u9-inverse-trig
+S: **Horizontal line test.** Draw horizontal lines $y=k$ across the graph. For every $k$ between $-\frac\pi2$ and $\frac\pi2$ the line meets the curve exactly once; for any other $k$ it does not meet it at all. No horizontal line meets the graph twice, so $f$ is one-to-one.
+W: A function is one-to-one exactly when no horizontal line cuts its graph more than once: two different inputs never give the same output.
+C: f-functions, u1-inverse-graph
+!:
+P: {"x":[-2,2],"y":[-2,2],"step":0.5,"fn":[{"f":"asin(x)","dom":[-1,1]}],"lines":[{"h":0.8},{"h":-0.5}],"pts":[[1,1.5708,"(1, π/2)",{"dx":-62,"dy":-6}],[-1,-1.5708,"(−1, −π/2)",{"dx":8,"dy":16}],[0.5,0.5236,"(½, π/6)",{"dx":8,"dy":14}],[0,0,""]],"labels":[[1.15,0.86,"y = k"],[-0.95,0.3,"y = sin⁻¹x",1]],"cap":"Each dashed line $y=k$ meets the curve at most once."}
+A: The graph rises smoothly from $\left(-1,-\frac\pi2\right)$ through $(0,0)$ to $\left(1,\frac\pi2\right)$; every horizontal line meets it at most once, so $f(x)=\sin^{-1}x$ is one-to-one.
+
+#Q 1.3 2(iii)
+Q: Let $f(x)=\sin^{-1}x$. Draw the graph of $f^{-1}$ and verify that it is the reflection of the graph of $f$ in the line $y=x$.
+T: u1-inverse-graph, f-inverse-fn, u9-inverse-trig
+S: From part (i), $f^{-1}(x)=\sin x$ on the restricted domain $\left[-\frac\pi2,\frac\pi2\right]$. Table: $\sin\left(-\frac\pi2\right)=-1$, $\sin\left(-\frac\pi6\right)=-\frac12$, $\sin0=0$, $\sin\frac\pi6=\frac12$, $\sin\frac\pi2=1$.
+C: f-inverse-fn
+S: Plot $y=\sin x$ for $-\frac\pi2\le x\le\frac\pi2$, and draw the line $y=x$ on the same axes, together with the graph of $f$ from part (ii).
+S: **Check the reflection.** Reflecting a point in $y=x$ swaps its coordinates: $(a,b)\to(b,a)$. The points $\left(1,\frac\pi2\right)$, $\left(\frac12,\frac\pi6\right)$, $(0,0)$ on $y=\sin^{-1}x$ become $\left(\frac\pi2,1\right)$, $\left(\frac\pi6,\frac12\right)$, $(0,0)$, and these lie on $y=\sin x$. Every point works the same way, because $b=\sin^{-1}a\iff a=\sin b$.
+W: The table of $f^{-1}$ is the table of $f$ with its two rows swapped, so the two graphs are mirror images in the line $y=x$.
+C: u1-inverse-graph
+!:
+P: {"x":[-2,2],"y":[-2,2],"step":0.5,"fn":[{"f":"asin(x)","dom":[-1,1]},{"f":"sin(x)","dom":["-pi/2","pi/2"],"col":2},{"f":"x","dash":true,"col":3}],"labels":[[0.12,1.3,"y = sin⁻¹x",1],[1.05,0.6,"y = sin x",2],[1.45,1.95,"y = x",3]],"pts":[[1,1.5708,"(1, π/2)",{"dx":-62,"dy":-6}],[1.5708,1,"(π/2, 1)"],[-1,-1.5708,""],[-1.5708,-1,""]],"cap":"$y=\\sin x$ on $\\left[-\\frac\\pi2,\\frac\\pi2\\right]$ is the mirror image of $y=\\sin^{-1}x$ in the line $y=x$."}
+A: $f^{-1}(x)=\sin x$ on $\left[-\frac\pi2,\frac\pi2\right]$; each point $(a,b)$ of $y=\sin^{-1}x$ matches the point $(b,a)$ of $y=\sin x$, so the graphs are reflections of each other in $y=x$.
 
 #Q 1.3 4
 Q: Given $f(x)=\sqrt x$, find the equation of the function after: (i) a vertical stretch by a factor of 2; (ii) a horizontal shift of 3 units to the right; (iii) applying both (i) and (ii).

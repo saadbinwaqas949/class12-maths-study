@@ -147,7 +147,8 @@
         parts.push(`<text class="pl-ptlabel" x="${X + dx}" y="${Y + dy}"${dx < 0 ? ' text-anchor="end"' : ''}>${M12.esc(o.label)}</text>`);
       }
     }
-    for (const t of spec.labels || []) parts.push(`<text class="pl-ptlabel" x="${sx(num(t[0]))}" y="${sy(num(t[1]))}">${M12.esc(t[2])}</text>`);
+    // free labels: [x, y, text] or [x, y, text, colour index] (coloured like curve number n)
+    for (const t of spec.labels || []) parts.push(`<text class="${t[3] ? 'pl-label c' + t[3] : 'pl-ptlabel'}" x="${sx(num(t[0]))}" y="${sy(num(t[1]))}">${M12.esc(t[2])}</text>`);
 
     const cap = spec.cap ? `<figcaption>${M12.md(spec.cap, { inline: true })}</figcaption>` : '';
     return `<figure class="plot"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${M12.esc(spec.alt || 'graph')}">${parts.join('')}</svg>${cap}</figure>`;

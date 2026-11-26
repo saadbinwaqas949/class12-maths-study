@@ -39,7 +39,7 @@
   // Question numbers the board removed from the 2026–27 syllabus (book numbering; where the book
   // prints a number twice, questions are counted in order, as the board does). Numbers only.
   const REMOVED = {
-    '1.1': ['1(v)', '2'], '1.2': ['1', '2', '3', '4', '6'], '1.3': ['1', '2(ii)', '2(iii)', '3', '5', '7', '8', '9'],
+    '1.1': ['1(v)', '2'], '1.2': ['1', '2', '3', '4', '6'], '1.3': ['1', '3', '5', '7', '8', '9'],
     '1.4': ['1(iii)', '1(v)', '2(v)', '2(vi)'], '1.5': ['4', '7', '8', '11', '12'],
     '2.3': ['2', '6'], '2.4': ['1(iv)', '2(iv)', '2(v)', '3', '5'], '2.5': ['2(b)', '3(ii)', '4(i)'],
     '2.6': ['2(ii)', '3(i)', '3(iii)', '5'], '2.7': ['1', '4', '5', '7'],

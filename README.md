@@ -74,7 +74,7 @@ Numbering follows the book. Where the book prints the same number twice (Ex 2.5,
 
 Judgment calls (easy to change if you disagree):
 
-- **Ex 1.3 Q2 (ii) and (iii)** ask for the graph of $\sin^{-1}x$. The board kept the question but removed graphs of inverse trigonometric functions (Unit 9), so only part (i) is covered, with a note.
+- **Ex 1.3 Q2** is covered in full, including the graph of $\sin^{-1}x$ in parts (ii) and (iii): the board kept this Unit 1 question. The graph section of Unit 9 (figures 9.1 to 9.15) stays out.
 - **Ex 4.1 Q7 and Ex 4.3 Q11** are RL/RC circuit questions. "Flow of electricity in series circuits" is removed, so they are left out.
 - Theory whose exercise questions were all removed (consumer/producer surplus, volumes of revolution, moment of inertia, velocity and acceleration vectors in 11.5) has no lessons on the site.
 

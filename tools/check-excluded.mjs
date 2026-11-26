@@ -58,7 +58,6 @@ const REMOVED = [
   // Also left out because they need a removed topic:
   ['4.1', '7'], // RL circuit (Flow of Electricity in Series Circuits is removed)
   ['4.3', '11'], // RC circuit
-  ['1.3', '2', ['ii', 'iii']], // graph of the inverse sine (graphs of inverse trig functions are removed)
 ];
 
 const problems = [];
@@ -115,10 +114,7 @@ const TOPICS = [
   [/cannonball|ferris|quarterback|comet orbits the sun/i, null, 'Ex 11.3 (removed)'],
   [/fundamental transcendental|non-?fundamental/i, null, 'Ex 1.2 Q3-4 classification (removed)'],
 ];
-const ALLOW = [
-  // the note that tells students why parts (ii) and (iii) of Ex 1.3 Q2 are not covered
-  { where: /^question 1\.3-2i\b/, re: /graph/i },
-];
+const ALLOW = [];
 for (const x of texts) {
   if (!x.t) continue;
   for (const [re, units, why] of TOPICS) {
@@ -189,7 +185,8 @@ for (const id of qids) {
   const specs = [...q.plots, ...q.steps.flatMap((s) => s.plots)];
   for (const p of specs) {
     const fns = [...(p.fn || []).map((f) => (typeof f === 'string' ? f : f.f)), ...(p.par || []).flatMap((o) => [o.x, o.y])].join(' ');
-    if (/\b(asin|acos|atan)\s*\(/.test(fns)) problems.push(`question ${id}: plots an inverse trigonometric function (graphs removed)`);
+    // Ex 1.3 Q2, which the board kept, asks for the graph of the inverse sine; Unit 9's graph section stays removed
+    if (/\b(asin|acos|atan)\s*\(/.test(fns) && !/^1\.3-2(ii|iii)$/.test(id)) problems.push(`question ${id}: plots an inverse trigonometric function (graphs removed)`);
     if (/\b(sinh|cosh|tanh)\s*\(/.test(fns)) problems.push(`question ${id}: plots a hyperbolic function (graphs removed)`);
   }
 }
