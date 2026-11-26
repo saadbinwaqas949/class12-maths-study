@@ -50,6 +50,9 @@
   /* ================= helpers ================= */
   const C = (id) => M.concepts[id];
   const ctitle = (id) => (C(id) ? C(id).title : id);
+  const tH = (t) => md(t, { inline: true }); // a title as HTML (titles may contain math)
+  const ctH = (id) => (C(id) ? tH(C(id).title) : esc(id));
+  const ctPlain = (id) => M.plain(ctitle(id));
   const unitName = (n) => (n === 0 ? 'Basics' : 'Unit ' + n);
   const go = (path) => { if (location.hash !== '#' + path) location.hash = path; else render(); };
   const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
@@ -96,19 +99,30 @@
     q.steps.forEach((st) => st.c.forEach((id) => { if (C(id) && !seen.has(id)) { seen.add(id); out.push(id); } }));
     return out;
   }
-  // every prerequisite (recursively), prerequisites before the topics that need them
-  function prereqPath(roots) {
+  // prerequisites of the given topics, at most maxDepth levels down (all levels if omitted),
+  // ordered so that every topic comes after the topics it builds on
+  function prereqPath(roots, maxDepth) {
+    const limit = maxDepth == null ? Infinity : maxDepth;
+    const depth = {};
+    let frontier = roots.filter(C);
+    frontier.forEach((id) => (depth[id] = 0));
+    for (let d = 0; frontier.length && d < limit; d++) {
+      const next = [];
+      for (const id of frontier) for (const p of C(id).pre) if (C(p) && depth[p] === undefined) { depth[p] = d + 1; next.push(p); }
+      frontier = next;
+    }
     const order = [];
-    const state = {};
+    const seen = {};
     const visit = (id) => {
-      if (state[id] || !C(id)) return;
-      state[id] = 1;
+      if (seen[id] || depth[id] === undefined) return;
+      seen[id] = 1;
       for (const p of C(id).pre) visit(p);
       order.push(id);
     };
     roots.forEach(visit);
     return order;
   }
+  const PATH_DEPTH = 2; // deep study: the question's topics plus two levels of what they build on
   const usedBy = {};
   function computeUsedBy() {
     for (const id of M.qOrder) for (const c of qTopics(M.questions[id])) (usedBy[c] = usedBy[c] || []).push(id);
@@ -174,6 +188,8 @@
     const qm = /[?&]m=(review|study|deep)\b/.exec(location.hash);
     if (qm && S.mode !== qm[1]) { S.mode = qm[1]; save(); setModeAttr(); syncHeader(); }
     const p = parts();
+    // "#/q/<id>?p=1" opens a question straight in practice mode
+    if (p[0] === 'q' && /[?&]p=1\b/.test(location.hash)) UI.practice[p[1]] = true;
     const routeKey = p.join('/');
     const changed = routeKey !== lastRoute;
     lastRoute = routeKey;
@@ -195,28 +211,44 @@
     const keep = opts.keep ? captureAnchor() : null;
     main.innerHTML = `<div class="view ${changed && !opts.keep ? 'enter' : ''}">${html}</div>`;
     document.body.classList.toggle('is-welcome', p[0] === 'welcome');
-    if (keep) restoreAnchor(keep, opts.flash); else if (changed) window.scrollTo(0, 0);
+    if (keep) restoreAnchor(keep, opts.flash); else if (changed) jump(0);
     syncHeader();
     afterRender(p);
   }
+  // Remember which visible block is at the top of the screen, so a re-render (mode switch,
+  // practice toggle, ...) can put the same block back in the same place.
   function captureAnchor() {
-    const steps = $$('.step, .path-card, .qhead');
-    let best = null;
-    for (const el of steps) {
+    const starts = []; // blocks that begin inside the visible area (what the reader is looking at)
+    const partial = []; // blocks cut off at the top edge
+    const top = $('#hdr') ? $('#hdr').getBoundingClientRect().bottom : 64;
+    for (const el of $$('.qhead, .path.open .path-card, .step')) {
       const r = el.getBoundingClientRect();
-      if (r.bottom > 90) { best = { key: el.dataset.anchor, top: r.top }; break; }
+      if (r.height === 0 || r.bottom <= top + 20 || r.top > window.innerHeight) continue;
+      (r.top >= top - 2 ? starts : partial).push({ key: el.dataset.anchor, top: r.top });
     }
-    return best || { y: window.scrollY };
+    return { list: starts.concat(partial), y: window.scrollY };
   }
   function restoreAnchor(a, flash) {
-    if (a.key) {
-      const el = document.querySelector(`[data-anchor="${a.key}"]`);
-      if (el) { window.scrollTo(0, window.scrollY + el.getBoundingClientRect().top - a.top); if (flash) el.classList.add('flash'); return; }
+    for (let i = 0; i < a.list.length; i++) {
+      const it = a.list[i];
+      const el = document.querySelector(`[data-anchor="${it.key}"]`);
+      if (el && el.getBoundingClientRect().height > 0) {
+        jump(window.scrollY + el.getBoundingClientRect().top - it.top);
+        if (flash) el.classList.add('flash');
+        return;
+      }
+      // the foundations path is only shown in deep study: if the reader was in it, go to the solution
+      if (i === 0 && it.key && it.key.startsWith('p-')) {
+        const sol = $('#solution');
+        if (sol) { jump(window.scrollY + sol.getBoundingClientRect().top - 90); return; }
+      }
     }
-    window.scrollTo(0, a.y || 0);
+    jump(a.y);
   }
+  // instant scroll (the page uses smooth scrolling for links, but re-renders must not animate)
+  function jump(y) { window.scrollTo({ top: y, behavior: 'instant' }); }
   function afterRender(p) {
-    document.title = (p[0] === 'q' && M.questions[p[1]] ? `Q ${M.questions[p[1]].no} · Ex ${M.questions[p[1]].ex}` : p[0] === 'concept' && C(p[1]) ? C(p[1]).title : p[0] === 'unit' && M.unitByNo[p[1]] ? `Unit ${p[1]}: ${M.unitByNo[p[1]].title}` : 'Maths 12') + ' · Maths 12 Study';
+    document.title = (p[0] === 'q' && M.questions[p[1]] ? `Q ${M.questions[p[1]].no} · Ex ${M.questions[p[1]].ex}` : p[0] === 'concept' && C(p[1]) ? ctPlain(p[1]) : p[0] === 'unit' && M.unitByNo[p[1]] ? `Unit ${p[1]}: ${M.unitByNo[p[1]].title}` : 'Maths 12') + ' · Maths 12 Study';
     if (p[0] === 'quiz' && p[1] === 'run') startQuizTimer();
   }
   function notFound() { return `<div class="empty"><h2>Page not found</h2><p>That page does not exist.</p><a class="btn" href="#/">Go home</a></div>`; }
@@ -291,7 +323,7 @@
       <a class="tool" href="#/concepts">${icon('book')}<b>Concept library</b><span>Every topic, from the basics up</span></a>
       <a class="tool" href="#/progress">${icon('check')}<b>Progress</b><span>Starred, solved and weak topics</span></a>
     </div>
-    ${weak.length ? `<h2 class="sec-h">Topics to revise <small>from your quiz mistakes</small></h2><div class="chips">${weak.map(([k, v]) => `<a class="chip warn" href="#/concept/${k}">${esc(ctitle(k))}<i>${v}</i></a>`).join('')}</div>` : ''}
+    ${weak.length ? `<h2 class="sec-h">Topics to revise <small>from your quiz mistakes</small></h2><div class="chips">${weak.map(([k, v]) => `<a class="chip warn" href="#/concept/${k}">${ctH(k)}<i>${v}</i></a>`).join('')}</div>` : ''}
     <div class="kbd-help"><span><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> switch mode</span><span><kbd>←</kbd><kbd>→</kbd> previous / next question</span><span><kbd>P</kbd> practice mode</span><span><kbd>/</kbd> search</span></div>`;
   }
 
@@ -322,10 +354,12 @@
     ${tab === 'learn' ? unitLessons(n, concepts) : unitExercises(u)}`;
   }
   function unitExercises(u) {
+    const gone = Object.keys(M.removedExercises || {}).filter((e) => M.removedExercises[e] === u.n);
     return u.exercises.filter((ex) => (ex.q || []).length).map((ex) => `
       <section class="exblock">
         <div class="ex-h"><h2>Exercise ${esc(ex.id)}</h2><span>${esc(ex.title || '')}</span><em>${plural(ex.q.length, 'question')}</em></div>
         ${ex.note ? `<p class="ex-note">${md(ex.note, { inline: true })}</p>` : ''}
+        ${ex.removed ? `<p class="ex-removed">Not in the 2026–27 syllabus (removed by the board): ${ex.removed.map((t) => 'Q' + t).join(', ')}</p>` : ''}
         <div class="qlist">
           ${ex.q.map((id, i) => {
             const q = M.questions[id];
@@ -339,7 +373,7 @@
             </a>`;
           }).join('')}
         </div>
-      </section>`).join('');
+      </section>`).join('') + (gone.length ? `<p class="ex-removed big">${gone.map((e) => `Exercise ${e}`).join(' and ')} ${gone.length > 1 ? 'are' : 'is'} not in the 2026–27 syllabus (removed completely by the board).</p>` : '');
   }
   function unitLessons(n, concepts) {
     if (!concepts.length) return `<div class="empty"><p>Lessons for this unit are on the way.</p></div>`;
@@ -347,7 +381,7 @@
       <ol class="lesson-path">${concepts.map((id, i) => {
         const c = C(id);
         return `<li class="lp-item ${S.known[id] ? 'known' : ''}" style="--i:${Math.min(i, 14)}">
-          <a href="#/concept/${id}" class="lp-main"><span class="lp-no">${i + 1}</span><span class="lp-t">${esc(c.title)}</span><span class="lp-r">${md(c.R, { inline: true })}</span></a>
+          <a href="#/concept/${id}" class="lp-main"><span class="lp-no">${i + 1}</span><span class="lp-t">${tH(c.title)}</span><span class="lp-r">${md(c.R, { inline: true })}</span></a>
           <button class="kbtn ${S.known[id] ? 'on' : ''}" data-act="know" data-c="${id}">${S.known[id] ? icon('check') + 'Known' : 'I know this'}</button>
         </li>`;
       }).join('')}</ol>`;
@@ -396,7 +430,7 @@
 
   /* ---- deep-study foundations path ---- */
   function pathItems(q, topics) {
-    return prereqPath(topics).filter((cid) => !S.known[cid]);
+    return prereqPath(topics, PATH_DEPTH).filter((cid) => !S.known[cid]);
   }
   function pathHTML(q, topics) {
     const items = pathItems(q, topics);
@@ -420,10 +454,10 @@
         ${items.map((cid, i) => {
           const c = C(cid);
           const state = finished || i < idx ? 'done' : i === idx ? 'cur' : 'next';
-          const why = stepUse[cid] ? `Used directly in step${stepUse[cid].length > 1 ? 's' : ''} ${stepUse[cid].join(', ')}.` : needFor[cid] ? `Needed to understand ${needFor[cid].map((x) => '<b>' + esc(ctitle(x)) + '</b>').join(', ')}.` : 'A topic this question relies on.';
+          const why = stepUse[cid] ? `Used directly in step${stepUse[cid].length > 1 ? 's' : ''} ${stepUse[cid].join(', ')}.` : needFor[cid] ? `Needed to understand ${needFor[cid].map((x) => '<b>' + ctH(x) + '</b>').join(', ')}.` : 'A topic this question relies on.';
           return `<article class="path-card ${state}" data-anchor="p-${cid}">
-            <div class="pc-h" data-act="path-goto" data-i="${i}"><span class="pc-n">${state === 'done' ? icon('check') : i + 1}</span><span class="pc-t">${esc(c.title)}</span><span class="pc-u">${unitName(c.unit)}</span></div>
-            ${state === 'cur' ? `<div class="pc-why">${why}</div><div class="pc-body">${conceptBody(c, 'deep')}</div>
+            <div class="pc-h" data-act="path-goto" data-i="${i}"><span class="pc-n">${state === 'done' ? icon('check') : i + 1}</span><span class="pc-t">${tH(c.title)}</span><span class="pc-u">${unitName(c.unit)}</span></div>
+            ${state === 'cur' ? `<div class="pc-why">${why}</div>${(() => { const deeper = c.pre.filter((x) => C(x) && !items.includes(x) && !S.known[x]); return deeper.length ? `<div class="pc-more"><span>Builds on</span>${deeper.map((x) => `<button class="chip" data-act="topic-open" data-c="${x}">${ctH(x)}</button>`).join('')}<em>Need these too? Open them on the right.</em></div>` : ''; })()}<div class="pc-body">${conceptBody(c, 'deep')}</div>
             <div class="pc-act"><button class="btn primary" data-act="path-next">I understand, next ${icon('right')}</button><button class="btn ghost" data-act="path-know" data-c="${cid}">I already know this</button><button class="btn ghost" data-act="path-skip">Skip to the solution</button></div>` : ''}
           </article>`;
         }).join('')}
@@ -445,7 +479,7 @@
     for (const cid of st.c) {
       const c = C(cid);
       if (!c) continue;
-      h += `<div class="cmini"><div class="cmini-h">${icon('bulb')}Topic used: <b>${esc(c.title)}</b></div>${md(c.R)}${!st.d && mode !== 'review' && c.B ? `<div class="cmini-b">${md(c.B)}</div>` : ''}${c.F && !st.d ? `<div class="c-formula small">${md(c.F)}</div>` : ''}<button class="link" data-act="topic-open" data-c="${cid}">Open this topic on the right ${icon('right')}</button></div>`;
+      h += `<div class="cmini"><div class="cmini-h">${icon('bulb')}Topic used: <b>${tH(c.title)}</b></div>${md(c.R)}${!st.d && mode !== 'review' && c.B ? `<div class="cmini-b">${md(c.B)}</div>` : ''}${c.F && !st.d ? `<div class="c-formula small">${md(c.F)}</div>` : ''}<button class="link" data-act="topic-open" data-c="${cid}">Open this topic on the right ${icon('right')}</button></div>`;
     }
     if (!h) h = `<div class="d-text muted">${st.w ? md(st.w) : 'This step is direct arithmetic or algebra on the previous line: simplify carefully and compare term by term.'}</div>`;
     return h;
@@ -507,7 +541,7 @@
     const open = !!UI.openTopics[cid];
     return `<div class="tcard ${known ? 'known' : ''} ${open ? 'open' : ''}" data-c="${cid}">
       <div class="tc-h">
-        <button class="tc-title" data-act="topic-toggle" data-c="${cid}"><span class="tc-chev">${icon('right')}</span><span class="tc-name">${esc(c.title)}</span><span class="tc-u">${unitName(c.unit)}</span></button>
+        <button class="tc-title" data-act="topic-toggle" data-c="${cid}"><span class="tc-chev">${icon('right')}</span><span class="tc-name">${tH(c.title)}</span><span class="tc-u">${unitName(c.unit)}</span></button>
         <button class="kbtn ${known ? 'on' : ''}" data-act="know" data-c="${cid}" title="${known ? 'Marked as known (click to undo)' : 'Skip this topic: I already know it'}">${known ? icon('check') + 'Known' : 'I know this'}</button>
       </div>
       ${extra ? `<div class="tc-extra">${extra}</div>` : ''}
@@ -523,7 +557,7 @@
       <div class="side-h"><b>Topics in this question</b><span>${unknown} to learn · ${topics.length - unknown} known</span></div>
       <p class="side-sub">Open the ones you need. Press <em>I know this</em> to skip a topic.</p>
       <div class="tlist">${topics.map((cid) => topicCard(cid, mode)).join('') || '<p class="muted">No linked topics.</p>'}</div>
-      ${fnd.length ? `<details class="fnd" ${mode === 'deep' ? 'open' : ''}><summary>Foundations behind these topics <i>${fnd.length}</i></summary><div class="tlist">${fnd.map((cid) => topicCard(cid, mode)).join('')}</div></details>` : ''}
+      ${fnd.length ? `<details class="fnd"><summary>More basics behind these topics <i>${fnd.length}</i></summary><div class="tlist">${fnd.map((cid) => topicCard(cid, mode)).join('')}</div></details>` : ''}
       ${mc.length ? `<button class="btn wide" data-act="topic-quiz" data-q="${q.id}">${icon('quiz')}Quick check on these topics (${Math.min(mc.length, 5)} MCQs)</button>` : ''}`;
   }
 
@@ -536,18 +570,18 @@
     const leads = (leadsTo[id] || []).filter(C);
     const mc = M.mcqs.filter((m) => m.c === id);
     return `
-    <div class="crumbs"><a href="#/concepts">Concepts</a><span>/</span>${unitName(c.unit)}<span>/</span>${esc(c.title)}</div>
+    <div class="crumbs"><a href="#/concepts">Concepts</a><span>/</span>${unitName(c.unit)}<span>/</span>${tH(c.title)}</div>
     <article class="concept">
       <header class="cp-h">
-        <div><p class="eyebrow">${unitName(c.unit)}${c.unit ? ' · ' + esc(M.unitByNo[c.unit] ? M.unitByNo[c.unit].title : '') : ' · foundations'}</p><h1>${esc(c.title)}</h1></div>
+        <div><p class="eyebrow">${unitName(c.unit)}${c.unit ? ' · ' + esc(M.unitByNo[c.unit] ? M.unitByNo[c.unit].title : '') : ' · foundations'}</p><h1>${tH(c.title)}</h1></div>
         <button class="kbtn big ${S.known[id] ? 'on' : ''}" data-act="know" data-c="${id}">${S.known[id] ? icon('check') + 'Known' : 'I know this'}</button>
       </header>
-      ${c.pre.length ? `<div class="cp-pre"><span>Builds on</span>${c.pre.filter(C).map((p) => `<a class="chip ${S.known[p] ? 'ok' : ''}" href="#/concept/${p}">${esc(ctitle(p))}</a>`).join('')}</div>` : ''}
+      ${c.pre.length ? `<div class="cp-pre"><span>Builds on</span>${c.pre.filter(C).map((p) => `<a class="chip ${S.known[p] ? 'ok' : ''}" href="#/concept/${p}">${ctH(p)}</a>`).join('')}</div>` : ''}
       <div class="cp-depth"><span>Showing the <b>${MODES[depth].name}</b> depth.</span>${S.mode !== 'deep' ? `<button class="link" data-act="concept-full" data-c="${id}">${UI.fullConcept[id] ? 'Show less' : 'Show the full lesson with all examples'}</button>` : ''}</div>
       <div class="cp-body">${conceptBody(c, depth)}</div>
       ${S.mode === 'deep' && c.pre.length ? `<details class="fnd"><summary>Refresh the topics this builds on</summary><div class="tlist">${c.pre.filter(C).map((p) => topicCard(p, 'study')).join('')}</div></details>` : ''}
       ${mc.length ? `<button class="btn" data-act="concept-quiz" data-c="${id}">${icon('quiz')}Quick check (${Math.min(mc.length, 5)} MCQs)</button>` : ''}
-      ${leads.length ? `<div class="cp-pre"><span>Leads to</span>${leads.map((p) => `<a class="chip" href="#/concept/${p}">${esc(ctitle(p))}</a>`).join('')}</div>` : ''}
+      ${leads.length ? `<div class="cp-pre"><span>Leads to</span>${leads.map((p) => `<a class="chip" href="#/concept/${p}">${ctH(p)}</a>`).join('')}</div>` : ''}
       ${used.length ? `<h2 class="sec-h">Questions that use this topic <small>${used.length}</small></h2><div class="qlist compact">${used.slice(0, 40).map((qid) => { const q = M.questions[qid]; return `<a class="qrow" href="#/q/${qid}"><span class="qr-no">Ex ${esc(q.ex)} · Q ${esc(q.no)}</span><span class="qr-text">${md(q.Q, { inline: true })}</span></a>`; }).join('')}</div>` : ''}
     </article>`;
   }
@@ -558,7 +592,7 @@
       const ids = M.conceptOrder.filter((id) => C(id).unit === n && (!f || (C(id).title + ' ' + M.plain(C(id).R)).toLowerCase().includes(f)));
       if (!ids.length) return '';
       return `<section class="lib-g"><h2>${n === 0 ? 'Basics (foundations)' : `Unit ${n} · ${esc(M.unitByNo[n].title)}`}<small>${ids.length}</small></h2>
-        <div class="lib-grid">${ids.map((id) => `<a class="lib-item ${S.known[id] ? 'known' : ''}" href="#/concept/${id}"><b>${esc(C(id).title)}</b><span>${md(C(id).R, { inline: true })}</span>${S.known[id] ? `<em>${icon('check')}known</em>` : ''}</a>`).join('')}</div></section>`;
+        <div class="lib-grid">${ids.map((id) => `<a class="lib-item ${S.known[id] ? 'known' : ''}" href="#/concept/${id}"><b>${ctH(id)}</b><span>${md(C(id).R, { inline: true })}</span>${S.known[id] ? `<em>${icon('check')}known</em>` : ''}</a>`).join('')}</div></section>`;
     }).join('');
     return `<div class="lib-top"><div><h1>Concept library</h1><p class="lead">Every topic used in the solutions, from basic algebra up. Each one adapts to your mode.</p></div>
       <input class="lib-filter" id="libFilter" type="search" placeholder="Filter topics" value="${esc(UI.libFilter)}"/></div>${body || '<div class="empty"><p>No topics match.</p></div>'}`;
@@ -573,7 +607,7 @@
     return `<h1>Your progress</h1><p class="lead">Saved in this browser only.</p>
       <div class="prog-units">${M.units.map((u) => { const p = unitProgress(u.n); return `<a href="#/unit/${u.n}" class="pu">${ring(p.pct, 46)}<div><b>Unit ${u.n}</b><span>${p.done}/${p.total}</span></div></a>`; }).join('')}</div>
       <h2 class="sec-h">Starred <small>${starred.length}</small></h2><div class="qlist compact">${starred.map(row).join('') || '<p class="muted">Star questions to find them here.</p>'}</div>
-      <h2 class="sec-h">Topics to revise <small>${weak.length}</small></h2><div class="chips">${weak.map(([k, v]) => `<a class="chip warn" href="#/concept/${k}">${esc(ctitle(k))}<i>${v}</i></a>`).join('') || '<p class="muted">Quiz mistakes will show the topics to revise here.</p>'}</div>
+      <h2 class="sec-h">Topics to revise <small>${weak.length}</small></h2><div class="chips">${weak.map(([k, v]) => `<a class="chip warn" href="#/concept/${k}">${ctH(k)}<i>${v}</i></a>`).join('') || '<p class="muted">Quiz mistakes will show the topics to revise here.</p>'}</div>
       <h2 class="sec-h">Recent quizzes</h2><div class="qhist">${S.quiz.slice(-10).reverse().map((r) => `<div><b>${r.score}/${r.total}</b><span>${esc(r.name)}</span><em>${new Date(r.at).toLocaleString()}</em></div>`).join('') || '<p class="muted">No quizzes yet.</p>'}</div>
       <h2 class="sec-h">Done <small>${done.length}</small></h2><div class="qlist compact">${done.slice(-30).reverse().map(row).join('') || '<p class="muted">Nothing marked as done yet.</p>'}</div>
       <div class="danger"><button class="btn ghost" data-act="reset">${icon('reset')}Reset all progress</button></div>`;
@@ -626,7 +660,7 @@
       <div class="qr-top"><span>${esc(z.name)}</span><span class="qr-count">Question ${z.i + 1} of ${z.items.length}</span><span class="qr-timer" id="qTimer">${icon('clock')}<b>0:00</b></span><button class="link" data-act="quiz-exit">Quit</button></div>
       <div class="qr-bar"><i style="width:${(100 * z.items.filter((x) => x.pick != null).length) / z.items.length}%"></i></div>
       <section class="card mcq">
-        <div class="mcq-meta">Unit ${m.unit}${m.c && C(m.c) ? ' · ' + esc(ctitle(m.c)) : ''}</div>
+        <div class="mcq-meta">Unit ${m.unit}${m.c && C(m.c) ? ' · ' + ctH(m.c) : ''}</div>
         <div class="mcq-q">${md(m.q)}</div>
         <div class="mcq-opts">${it.order.map((oi, k) => {
           let cls = '';
@@ -634,7 +668,7 @@
           else if (answered && oi === it.pick) cls = 'picked';
           return `<button class="opt ${cls}" data-act="quiz-opt" data-k="${oi}" ${reveal ? 'disabled' : ''}><span class="opt-l">${letters[k]}</span><span class="opt-t">${md(m.opts[oi], { inline: true })}</span></button>`;
         }).join('')}</div>
-        ${reveal ? `<div class="mcq-exp ${it.pick === m.ans ? 'ok' : 'bad'}"><b>${it.pick === m.ans ? 'Correct.' : 'Not quite.'}</b> ${md(m.e)}${m.c && C(m.c) ? `<a class="link" href="#/concept/${m.c}" target="_self">Review: ${esc(ctitle(m.c))} ${icon('right')}</a>` : ''}</div>` : ''}
+        ${reveal ? `<div class="mcq-exp ${it.pick === m.ans ? 'ok' : 'bad'}"><b>${it.pick === m.ans ? 'Correct.' : 'Not quite.'}</b> ${md(m.e)}${m.c && C(m.c) ? `<a class="link" href="#/concept/${m.c}" target="_self">Review: ${ctH(m.c)} ${icon('right')}</a>` : ''}</div>` : ''}
       </section>
       <div class="qr-nav">
         ${z.i > 0 ? `<button class="btn ghost" data-act="quiz-move" data-d="-1">${icon('left')}Back</button>` : '<span></span>'}
@@ -683,7 +717,7 @@
         <div class="res-act">${wrong.length ? `<button class="btn primary" data-act="quiz-retry">Retry the ${plural(wrong.length, 'mistake')}</button>` : ''}<a class="btn ghost" href="#/quiz">New quiz</a></div></div>
       </div>
       <div class="res-units">${Object.entries(byUnit).map(([u, v]) => `<div><b>Unit ${u}</b><span>${v.r}/${v.t}</span><i style="--p:${v.r / v.t}"></i></div>`).join('')}</div>
-      ${topics.length ? `<h2 class="sec-h">Topics to revise</h2><div class="chips">${topics.map((c) => `<a class="chip warn" href="#/concept/${c}">${esc(ctitle(c))}</a>`).join('')}</div>` : ''}
+      ${topics.length ? `<h2 class="sec-h">Topics to revise</h2><div class="chips">${topics.map((c) => `<a class="chip warn" href="#/concept/${c}">${ctH(c)}</a>`).join('')}</div>` : ''}
       <h2 class="sec-h">Review</h2>
       <div class="rev-list">${z.items.map((x, n) => {
         const ok = x.pick === x.m.ans;
@@ -756,22 +790,38 @@
   let IDX = null;
   function buildIndex() {
     IDX = [];
-    for (const id of M.conceptOrder) { const c = C(id); IDX.push({ k: 'c', id, t: (c.title + ' ' + M.plain(c.R)).toLowerCase(), title: c.title, sub: unitName(c.unit) }); }
-    for (const id of flat()) { const q = M.questions[id]; IDX.push({ k: 'q', id, t: (`ex ${q.ex} q ${q.no} ` + M.plain(q.Q) + ' ' + q.T.map(ctitle).join(' ')).toLowerCase(), q }); }
+    for (const id of M.conceptOrder) { const c = C(id); IDX.push({ k: 'c', id, t: (M.plain(c.title) + ' ' + M.plain(c.R)).toLowerCase(), title: c.title, sub: unitName(c.unit) }); }
+    for (const id of flat()) { const q = M.questions[id]; IDX.push({ k: 'q', id, t: (`ex ${q.ex} q ${q.no} ` + M.plain(q.Q) + ' ' + q.T.map(ctPlain).join(' ')).toLowerCase(), q }); }
   }
   function search(term) {
     if (!IDX) buildIndex();
-    const words = term.toLowerCase().split(/\s+/).filter(Boolean);
+    const t = term.toLowerCase().trim();
+    // "ex 5.2 q 4", "5.2 q4", "5.2/4", "5.2-4(ii)": jump straight to that exercise question
+    const ref = t.match(/^(?:ex(?:ercise)?\.?\s*)?(\d{1,2}\.\d)\s*(?:q(?:uestion)?\.?\s*|[\/\-\s])\s*(\d{1,2})\s*\(?([ivx]+|[a-d])?\)?$/);
+    if (ref) {
+      const [, ex, n, part] = ref;
+      const hits = flat().filter((id) => { const q = M.questions[id]; const no = id.slice(q.ex.length + 1); return q.ex === ex && no.match(/^\d+/)[0] === n && (!part || no.slice(n.length) === part); });
+      if (hits.length) return hits.slice(0, 14).map((id) => IDX.find((e) => e.k === 'q' && e.id === id));
+      const label = `Exercise ${ex}, Q${n}${part ? `(${part})` : ''}`;
+      if (M.removedExercises && M.removedExercises[ex]) return [{ k: 'x', msg: `Exercise ${ex} is not in the 2026–27 syllabus. The board removed it completely.` }];
+      const rem = (M.removed && M.removed[ex]) || [];
+      const norm = (tok) => tok.split(' ')[0].replace(/[()]/g, '');
+      if (rem.some((tok) => norm(tok) === n + (part || '') || norm(tok) === n)) return [{ k: 'x', msg: `${label} is not in the 2026–27 syllabus. The board removed it.` }];
+    }
+    const words = t.split(/\s+/).filter(Boolean);
     if (!words.length) return [];
-    return IDX.filter((e) => words.every((w) => e.t.includes(w))).slice(0, 14);
+    const res = IDX.filter((e) => words.every((w) => e.t.includes(w)));
+    // topics whose title matches come first
+    res.sort((a, b) => (b.k === 'c' && words.every((w) => M.plain(b.title).toLowerCase().includes(w))) - (a.k === 'c' && words.every((w) => M.plain(a.title).toLowerCase().includes(w))));
+    return res.slice(0, 14);
   }
   function showSearch(term) {
     const box = $('#searchRes');
     const res = search(term);
     if (!term.trim()) { box.hidden = true; return; }
     box.hidden = false;
-    box.innerHTML = res.length ? res.map((r, i) => r.k === 'c'
-      ? `<a class="sr ${i === 0 ? 'act' : ''}" href="#/concept/${r.id}"><em>Topic</em><b>${esc(r.title)}</b><span>${r.sub}</span></a>`
+    box.innerHTML = res.length ? res.map((r, i) => r.k === 'x' ? `<div class="sr-none">${esc(r.msg)}</div>` : r.k === 'c'
+      ? `<a class="sr ${i === 0 ? 'act' : ''}" href="#/concept/${r.id}"><em>Topic</em><b>${tH(r.title)}</b><span>${r.sub}</span></a>`
       : `<a class="sr ${i === 0 ? 'act' : ''}" href="#/q/${r.id}"><em>Ex ${esc(r.q.ex)} · Q ${esc(r.q.no)}</em><span class="sr-q">${md(r.q.Q, { inline: true })}</span></a>`).join('') : '<div class="sr-none">Nothing found.</div>';
   }
 
@@ -840,7 +890,7 @@
       $$(`[data-act="know"][data-c="${id}"]`).forEach((b) => { b.classList.toggle('on', k); b.innerHTML = k ? icon('check') + 'Known' : 'I know this'; });
       $$(`.tcard[data-c="${id}"], .lp-item`).forEach((c) => { if (c.classList.contains('tcard') || $(`[data-c="${id}"]`, c)) c.classList.toggle('known', k); });
       if (k) { UI.openTopics[id] = false; $$(`.tcard[data-c="${id}"]`).forEach((c) => c.classList.remove('open')); }
-      toast(k ? `Marked <b>${esc(ctitle(id))}</b> as known` : `<b>${esc(ctitle(id))}</b> is back on your list`);
+      toast(k ? `Marked <b>${ctH(id)}</b> as known` : `<b>${ctH(id)}</b> is back on your list`);
       if (S.mode === 'deep' && currentQ() && el.closest('.path')) refreshQuestion();
     },
     practice: () => { const q = currentQ(); if (!q) return; UI.practice[q.id] = !UI.practice[q.id]; refreshQuestion(); },
@@ -853,14 +903,14 @@
     solved: () => { const q = currentQ(); S.solved[q.id] = !S.solved[q.id] ? Date.now() : 0; if (!S.solved[q.id]) delete S.solved[q.id]; save(); refreshQuestion(); },
     'path-toggle': () => { const q = currentQ(); const sec = $('.path'); const open = !sec.classList.contains('open'); UI.pathOpen[q.id] = open; sec.classList.toggle('open', open); },
     'path-next': () => { const q = currentQ(); UI.pathIdx[q.id] = (UI.pathIdx[q.id] || 0) + 1; const items = pathItems(q, qTopics(q)); if (UI.pathIdx[q.id] >= items.length) { S.pathDone[q.id] = true; save(); } refreshQuestion(); const cur = $('.path-card.cur') || $('#solution'); if (cur) cur.scrollIntoView({ behavior: 'smooth', block: 'start' }); },
-    'path-know': (el) => { const q = currentQ(); S.known[el.dataset.c] = true; save(); toast(`Skipped <b>${esc(ctitle(el.dataset.c))}</b>`); const items = pathItems(q, qTopics(q)); if ((UI.pathIdx[q.id] || 0) >= items.length) { S.pathDone[q.id] = true; save(); } refreshQuestion(); },
+    'path-know': (el) => { const q = currentQ(); S.known[el.dataset.c] = true; save(); toast(`Skipped <b>${ctH(el.dataset.c)}</b>`); const items = pathItems(q, qTopics(q)); if ((UI.pathIdx[q.id] || 0) >= items.length) { S.pathDone[q.id] = true; save(); } refreshQuestion(); },
     'path-skip': () => { const q = currentQ(); UI.unlocked[q.id] = true; UI.pathOpen[q.id] = false; refreshQuestion(); const s = $('#solution'); if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' }); },
     'path-goto': (el) => { const q = currentQ(); if (S.pathDone[q.id] || +el.dataset.i < (UI.pathIdx[q.id] || 0)) { UI.pathIdx[q.id] = +el.dataset.i; delete S.pathDone[q.id]; UI.unlocked[q.id] = true; refreshQuestion(); } },
     'path-restart': () => { const q = currentQ(); UI.pathIdx[q.id] = 0; delete S.pathDone[q.id]; UI.unlocked[q.id] = true; UI.pathOpen[q.id] = true; save(); refreshQuestion(); },
     'unit-tab': (el) => { UI.unitTab[el.dataset.u] = el.dataset.t; render({ keep: true }); },
     'unit-quiz': (el) => makeQuiz(shuffle(M.mcqs.filter((m) => m.unit === +el.dataset.u)).slice(0, 15), `Unit ${el.dataset.u} quiz`, 'instant'),
     'topic-quiz': (el) => { const q = M.questions[el.dataset.q]; const t = qTopics(q); makeQuiz(shuffle(M.mcqs.filter((m) => t.includes(m.c))).slice(0, 5), `Quick check · Ex ${q.ex} Q ${q.no}`, 'instant'); },
-    'concept-quiz': (el) => makeQuiz(shuffle(M.mcqs.filter((m) => m.c === el.dataset.c)).slice(0, 5), `Quick check · ${ctitle(el.dataset.c)}`, 'instant'),
+    'concept-quiz': (el) => makeQuiz(shuffle(M.mcqs.filter((m) => m.c === el.dataset.c)).slice(0, 5), `Quick check · ${ctPlain(el.dataset.c)}`, 'instant'),
     'concept-full': (el) => { UI.fullConcept[el.dataset.c] = !UI.fullConcept[el.dataset.c]; render({ keep: true }); },
     'quiz-unit': (el) => { const st = UI.quizSetup; st.units[el.dataset.u] = !st.units[el.dataset.u]; render({ keep: true }); },
     'quiz-start': () => {

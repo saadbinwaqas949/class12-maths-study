@@ -35,4 +35,28 @@
   U(11, 'Vector Valued Functions and Their Derivatives',
     'Scalar and vector-valued functions, constructing them, their domain and range, and differentiating them.',
     [['11.1', 'Vector-valued functions'], ['11.2', 'Derivatives of vector-valued functions']]);
+
+  // Question numbers the board removed from the 2026–27 syllabus (book numbering; where the book
+  // prints a number twice, questions are counted in order, as the board does). Numbers only.
+  const REMOVED = {
+    '1.1': ['1(v)', '2'], '1.2': ['1', '2', '3', '4', '6'], '1.3': ['1', '2(ii)', '2(iii)', '3', '5', '7', '8', '9'],
+    '1.4': ['1(iii)', '1(v)', '2(v)', '2(vi)'], '1.5': ['4', '7', '8', '11', '12'],
+    '2.3': ['2', '6'], '2.4': ['1(iv)', '2(iv)', '2(v)', '3', '5'], '2.5': ['2(b)', '3(ii)', '4(i)'],
+    '2.6': ['2(ii)', '3(i)', '3(iii)', '5'], '2.7': ['1', '4', '5', '7'],
+    '3.1': ['3(viii)', '3(ix)', '3(x)', '3(xii)'], '3.2': ['1(iii)', '1(v)', '1(viii)', '2(v)', '2(ix)', '2(xi)', '2(xiii)', '2(xiv)'],
+    '3.3': ['11', '15', '16', '20', '23'], '3.4': ['4', '5', '6', '9', '12', '13', '14', '15'],
+    '3.5': ['1(vi)', '1(vii)', '1(ix)', '3', '6(iii)', '7', '10', '12', '14', '15(i)', '15(iv)', '16(iv)'],
+    '3.6': ['2', '3(iii)', '3(iv)', '11', '12', '13', '14', '15'], '3.7': ['1', '2', '7', '10', '11', '12'],
+    '4.1': ['1(v)', '2', '3', '4', '5', '6', '7 (circuits)'], '4.3': ['5', '6', '7', '8', '9', '10', '11 (circuits)'],
+    '5.1': ['4', '5', '7(vi)', '8', '11'], '5.2': ['6', '7', '9'], '5.3': ['11', '12'],
+    '6.1': ['4', '8', '10', '12'], '6.2': ['5', '6'], '6.3': ['5', '6', '7'], '6.4': ['5', '6', '7', '11', '12', '13'],
+    '6.5': ['3', '6', '9', '11', '12', '14', '18', '19', '20'], '6.6': ['6', '7', '8', '9', '10', '11'],
+    '7.1': ['1', '2', '3', '4', '5'],
+    '8.2': ['1(i)', '1(iii)', '2(ii)', '2(iii)', '3(iv)', '3(v)'], '8.3': ['1', '2', '7', '8'],
+    '9.2': ['11', '12', '13', '17', '18', '20', '21'],
+    '10.1': ['14', '19', '20', '21', '22', '23', '24'], '10.2': ['1', '2', '3', '4', '5'],
+  };
+  for (const u of M.units) for (const e of u.exercises) if (REMOVED[e.id]) e.removed = REMOVED[e.id];
+  M.removed = REMOVED;
+  M.removedExercises = { '8.4': 8, '11.3': 11 }; // removed completely
 })(window.M12);

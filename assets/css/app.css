@@ -211,6 +211,8 @@ body.mode-swap .qmain, body.mode-swap .qside, body.mode-swap .cp-body, body.mode
 .ex-h span { color: var(--text2); }
 .ex-h em { margin-left: auto; font-style: normal; color: var(--muted); font-size: 13px; }
 .ex-note { color: var(--muted); font-size: 14px; }
+.ex-removed { color: var(--muted); font-size: 13px; margin: -2px 0 10px; padding-left: 10px; border-left: 2px solid var(--line2); }
+.ex-removed.big { font-size: 14px; margin-top: 10px; }
 .qlist { display: grid; gap: 6px; }
 .qrow { display: grid; grid-template-columns: 12px 92px 1fr auto auto; align-items: center; gap: 14px; padding: 11px 16px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); transition: border-color .2s, background .2s, transform .25s var(--ease); }
 .view.enter .qrow { animation: rise .45s var(--ease) both; animation-delay: calc(var(--i) * 18ms); }
@@ -331,6 +333,11 @@ th { background: var(--surface2); font-weight: 650; }
 .pc-t { font-weight: 650; }
 .pc-u { margin-left: auto; font-size: 12px; color: var(--muted); }
 .pc-why { margin: 0 14px 10px 54px; font-size: 13.5px; color: var(--deep); }
+.pc-more { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 14px 12px 54px; font-size: 13px; color: var(--muted); }
+.pc-more > span { font-weight: 600; margin-right: 2px; }
+.pc-more em { font-style: normal; width: 100%; font-size: 12.5px; }
+.pc-more .chip { padding: 3px 10px; font-size: 12.5px; }
+.tc-name .katex, .pc-t .katex, .lp-t .katex, .lib-item b .katex, .chip .katex, h1 .katex { font-size: 1em; }
 .pc-body { padding: 0 18px 4px 54px; }
 .pc-act { display: flex; gap: 8px; flex-wrap: wrap; padding: 14px 18px 16px 54px; }
 .path-end { display: flex; align-items: center; gap: 8px; color: var(--text2); font-size: 14px; padding-top: 6px; }
