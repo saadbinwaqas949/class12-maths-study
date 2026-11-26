@@ -15,8 +15,8 @@ B: $y=\sin^{-1}x$ means "$y$ is the angle in $\left[-\frac\pi2,\frac\pi2\right]$
 The domain of each inverse is the range of the original function: $\sin x$ only takes values in $[-1,1]$, so $\sin^{-1}x$ only accepts inputs in $[-1,1]$.
 X: **Memory aid for the ranges.** Functions whose negative inputs should give negative angles ($\sin^{-1},\tan^{-1},\csc^{-1}$) use the interval around $0$. Those that give obtuse angles for negative inputs ($\cos^{-1},\sec^{-1},\cot^{-1}$) use an interval from $0$ to $\pi$.
 $\sin^{-1}x$ is **not** $\frac1{\sin x}$; that reciprocal is $\csc x$.
-E: $\sin^{-1}\left(\frac12\right)=\frac\pi6$ (not $\frac{5\pi}6$, which is outside the principal range).
-M: Giving an angle outside the principal range, e.g. $\cos^{-1}\left(-\frac{\sqrt3}2\right)=-\frac\pi6$ (wrong) instead of $\frac{5\pi}6$.
+E: $\sin^{-1}\left(-\frac12\right)=-\frac\pi6$ (not $\frac{7\pi}6$ or $\frac{11\pi}6$, which are outside the principal range).
+M: Giving an angle outside the principal range, e.g. $\cos^{-1}\left(-\frac12\right)=-\frac\pi3$ (wrong) instead of $\frac{2\pi}3$.
 
 #C u9-principal-value Finding principal values
 pre: u9-inverse-trig
@@ -26,15 +26,15 @@ B: **Steps:**
 2. Use the principal range: for a negative input,
 - $\sin^{-1}(-a)=-\sin^{-1}a$, $\tan^{-1}(-a)=-\tan^{-1}a$, $\csc^{-1}(-a)=-\csc^{-1}a$;
 - $\cos^{-1}(-a)=\pi-\cos^{-1}a$, $\sec^{-1}(-a)=\pi-\sec^{-1}a$, $\cot^{-1}(-a)=\pi-\cot^{-1}a$.
-E: $\cos^{-1}\left(-\frac{\sqrt2}2\right)=\pi-\frac\pi4=\frac{3\pi}4$; $\ \tan^{-1}(-\sqrt3)=-\frac\pi3$.
-M: Using $-\frac{\pi}{4}$ for $\cos^{-1}\left(-\frac{\sqrt2}2\right)$.
+E: $\cos^{-1}\left(-\frac12\right)=\pi-\frac\pi3=\frac{2\pi}3$; $\ \sin^{-1}\left(-\frac{\sqrt3}2\right)=-\frac\pi3$.
+M: Using $-\frac{\pi}{3}$ for $\cos^{-1}\left(-\frac12\right)$.
 
 #C u9-composite Expressions like $\sin^{-1}(\cos\theta)$
 pre: u9-principal-value, f-quadrants
 R: Work from the inside out: evaluate the inner trig value first, then find the principal value of the outer inverse.
-B: $\sin^{-1}\left[\cos\frac{3\pi}4\right]=\sin^{-1}\left(-\frac{1}{\sqrt2}\right)=-\frac\pi4$.
+B: $\sin^{-1}\left[\cos\frac{\pi}3\right]=\sin^{-1}\left(\frac12\right)=\frac\pi6$.
 Note that $\sin^{-1}(\sin\theta)=\theta$ only when $\theta$ is already in $\left[-\frac\pi2,\frac\pi2\right]$.
-E: $\tan^{-1}\left[\cot\frac\pi6\right]=\tan^{-1}\sqrt3=\frac\pi3$.
+E: $\cos^{-1}\left[\sin\left(-\frac\pi6\right)\right]=\cos^{-1}\left(-\frac12\right)=\frac{2\pi}3$.
 
 #C u9-domain Domains of functions with inverse trig
 pre: u9-inverse-trig, f-inequalities
@@ -58,7 +58,7 @@ E: $\cot^{-1}(x+1)=\tan^{-1}\frac{1}{x+1}$ for $x+1>0$.
 #C u9-triangle Converting with a right triangle
 pre: f-pythagoras, u9-inverse-trig
 R: For a positive argument, an inverse trig value is an acute angle in a right triangle; draw it, find the third side, and read off any other ratio.
-B: $\cos^{-1}\frac8{17}=\alpha$: adjacent $8$, hypotenuse $17$, so opposite $=\sqrt{289-64}=15$. Hence $\alpha=\sin^{-1}\frac{15}{17}=\tan^{-1}\frac{15}8=\csc^{-1}\frac{17}{15}$.
+B: $\cos^{-1}\frac5{13}=\alpha$: adjacent $5$, hypotenuse $13$, so opposite $=\sqrt{169-25}=12$. Hence $\alpha=\sin^{-1}\frac{12}{13}=\tan^{-1}\frac{12}5=\sec^{-1}\frac{13}{5}$.
 This works because for positive arguments every principal value is an acute angle.
 E: $\tan^{-1}\frac43=\alpha$: opposite 4, adjacent 3, hypotenuse 5, so $\sin\alpha=\frac45$, $\cos\alpha=\frac35$.
 M: Applying the triangle method to a negative argument without fixing the sign.
@@ -89,7 +89,7 @@ pre: u9-sum-formulas
 R: $2\tan^{-1}x=\tan^{-1}\frac{2x}{1-x^2}$ ($|x|<1$), $2\sin^{-1}x=\sin^{-1}\left(2x\sqrt{1-x^2}\right)$, $2\cos^{-1}x=\cos^{-1}(2x^2-1)$, and $2\tan^{-1}x=\cos^{-1}\frac{1-x^2}{1+x^2}$ ($x\ge0$).
 B: Set $y=x$ in the sum formulas, or use $\tan2\alpha$, $\sin2\alpha$, $\cos2\alpha$ with $\alpha$ the inverse angle.
 For $\cos2\alpha$ in terms of $\tan\alpha$: $\cos2\alpha=\frac{1-\tan^2\alpha}{1+\tan^2\alpha}$.
-E: $2\tan^{-1}\frac34=\tan^{-1}\frac{3/2}{1-9/16}=\tan^{-1}\frac{24}7$.
+E: $2\tan^{-1}\frac15=\tan^{-1}\dfrac{2/5}{1-1/25}=\tan^{-1}\dfrac{5}{12}$.
 `);
 
 M12.addQuestions(9, String.raw`
@@ -497,12 +497,12 @@ E: The range of $\tan^{-1}$ is $\left(-\frac\pi2,\frac\pi2\right)$.
 
 #M
 c: u9-principal-value
-Q: $\cos^{-1}\left(-\frac12\right)=$
-O: $-\frac\pi3$
-O: $\frac\pi3$
-O*: $\frac{2\pi}3$
-O: $\frac{4\pi}3$
-E: $\pi-\frac\pi3=\frac{2\pi}3$.
+Q: $\cos^{-1}(-1)=$
+O: $-\pi$
+O: $0$
+O*: $\pi$
+O: $\frac{\pi}{2}$
+E: $\cos\pi=-1$ and $\pi$ lies in the range $[0,\pi]$.
 
 #M
 c: u9-relations

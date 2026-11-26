@@ -8,7 +8,7 @@ B: Integration is differentiation in reverse. Because the derivative of a consta
 Parts of the notation: $\int$ is the integral sign, $f(x)$ the **integrand**, $dx$ shows the variable, $c$ the **constant of integration**.
 **Always check** an answer by differentiating it: you must get the integrand back.
 X: Solving $\frac{dy}{dx}=f(x)$ means finding all antiderivatives; a condition such as $y(0)=3$ then fixes $c$.
-E: $\frac{dy}{dx}=100x^4\Rightarrow y=\int100x^4\,dx=20x^5+c$. Check: $(20x^5)'=100x^4$ ✓.
+E: $\frac{dy}{dx}=6x^2\Rightarrow y=\int6x^2\,dx=2x^3+c$. Check: $(2x^3)'=6x^2$ ✓.
 M: Forgetting $+c$ in an indefinite integral.
 
 #C u3-standard-integrals Table of standard integrals
@@ -16,9 +16,9 @@ pre: u3-antiderivative, u2-trig-derivs, u2-exp-derivs, u2-inv-trig-derivs
 R: Every differentiation formula read backwards gives an integral: $\int x^n\,dx=\frac{x^{n+1}}{n+1}$ $(n\ne-1)$, $\int\frac1x\,dx=\ln|x|$, $\int e^x\,dx=e^x$, $\int\cos x\,dx=\sin x$, …
 F: $$\int x^n\,dx=\frac{x^{n+1}}{n+1}\ (n\neq-1),\quad \int\frac{dx}{x}=\ln|x|,\quad \int e^x\,dx=e^x,\quad \int a^x\,dx=\frac{a^x}{\ln a}$$ $$\int\cos x\,dx=\sin x,\ \int\sin x\,dx=-\cos x,\ \int\sec^2x\,dx=\tan x,\ \int\csc^2x\,dx=-\cot x,\ \int\sec x\tan x\,dx=\sec x,\ \int\csc x\cot x\,dx=-\csc x$$ $$\int\frac{dx}{\sqrt{1-x^2}}=\sin^{-1}x,\qquad \int\frac{dx}{1+x^2}=\tan^{-1}x,\qquad \int\frac{dx}{x\sqrt{x^2-1}}=\sec^{-1}|x|$$
 B: Before integrating, **rewrite** the integrand as a sum of these standard forms: expand brackets, split fractions, write roots as powers.
-$\int\frac{x+2}{\sqrt x}\,dx=\int\left(x^{1/2}+2x^{-1/2}\right)dx=\tfrac23x^{3/2}+4x^{1/2}+c$.
+$\int\frac{x+3}{\sqrt x}\,dx=\int\left(x^{1/2}+3x^{-1/2}\right)dx=\tfrac23x^{3/2}+6x^{1/2}+c$.
 X: Also known: $\int\tan x\,dx=\ln|\sec x|$, $\int\cot x\,dx=\ln|\sin x|$, $\int\sec x\,dx=\ln|\sec x+\tan x|$, $\int\csc x\,dx=\ln|\csc x-\cot x|$. The last two come from multiplying by a clever form of 1, e.g. $\frac{\sec x+\tan x}{\sec x+\tan x}$, which makes the numerator the derivative of the denominator.
-E: $\int(3x+3^x+x^3)\,dx=\frac{3x^2}2+\frac{3^x}{\ln3}+\frac{x^4}4+c$.
+E: $\int\left(2^x+\dfrac1x\right)dx=\dfrac{2^x}{\ln2}+\ln|x|+c$.
 M: $\int x^{-1}dx$ is $\ln|x|$, not $\frac{x^0}{0}$.
 
 #C u3-integral-rules Rules of integration
@@ -30,19 +30,19 @@ B: These three patterns cover a large share of exam integrals:
 - **derivative over function**: $\int\frac{2x}{x^2+1}dx=\ln(x^2+1)+c$;
 - **linear inside**: $\int\cos(3x+1)\,dx=\tfrac13\sin(3x+1)+c$.
 If the derivative is off by a constant factor, adjust it: $\int\frac{x}{x^2+1}dx=\frac12\int\frac{2x}{x^2+1}dx$.
-E: $\int\frac{ax+b}{\sqrt{ax^2+2bx+c}}\,dx$: the derivative of $ax^2+2bx+c$ is $2(ax+b)$, so the integral is $\frac12\cdot2\sqrt{ax^2+2bx+c}=\sqrt{ax^2+2bx+c}+C$.
+E: $\int\frac{x}{\sqrt{x^2+4}}\,dx$: the derivative of $x^2+4$ is $2x$, so the integral is $\frac12\cdot2\sqrt{x^2+4}=\sqrt{x^2+4}+C$.
 M: You can only adjust a missing **constant** factor, never a missing $x$.
 
 #C u3-trig-integrals Integrals that need trigonometric identities
 pre: u3-standard-integrals, f-compound, f-sum-product, f-trig-identities
 R: Rewrite before integrating: $\tan^2x=\sec^2x-1$, $\cos^2x=\frac{1+\cos2x}2$, $\sin^2x=\frac{1-\cos2x}2$, products $\to$ sums, $1\pm\cos x\to2\cos^2\frac x2$ or $2\sin^2\frac x2$.
 B: Squares and products of trig functions have no direct formula, so turn them into first powers or sums:
-- $\int\cot^2x\,dx=\int(\csc^2x-1)dx=-\cot x-x+c$;
-- $\int\sin x\cos7x\,dx=\frac12\int(\sin8x-\sin6x)dx$;
-- $\int\frac{dx}{1+\cos x}=\int\frac{dx}{2\cos^2\frac x2}=\frac12\int\sec^2\frac x2\,dx=\tan\frac x2+c$;
-- $\sec^4x=\sec^2x(1+\tan^2x)$, then use $\int\tan^2x\sec^2x\,dx=\frac{\tan^3x}3$.
-X: Factorising also helps: $\dfrac{\cos^3x-\sin^3x}{\cos x-\sin x}=\cos^2x+\cos x\sin x+\sin^2x=1+\tfrac12\sin2x$ (difference of cubes), and $\dfrac{\cos2x}{\sin x+\cos x}=\cos x-\sin x$ (difference of squares).
-E: $\int\frac{1-\cos2x}{1+\cos2x}dx=\int\frac{2\sin^2x}{2\cos^2x}dx=\int\tan^2x\,dx=\tan x-x+c$.
+- $\int\tan^2x\,dx=\int(\sec^2x-1)dx=\tan x-x+c$;
+- $\int\cos5x\cos2x\,dx=\frac12\int(\cos7x+\cos3x)dx$;
+- $\int\frac{dx}{1-\cos x}=\int\frac{dx}{2\sin^2\frac x2}=\frac12\int\csc^2\frac x2\,dx=-\cot\frac x2+c$;
+- $\csc^4x=\csc^2x(1+\cot^2x)$, then use $\int\cot^2x\csc^2x\,dx=-\frac{\cot^3x}3$.
+X: Factorising also helps: $\dfrac{1-\cos^3x}{1-\cos x}=1+\cos x+\cos^2x$ (difference of cubes), and $\dfrac{\cos2x}{\cos x-\sin x}=\cos x+\sin x$ (difference of squares).
+E: $\int\cos^23x\,dx=\int\frac{1+\cos6x}{2}\,dx=\frac x2+\frac{\sin6x}{12}+c$.
 M: $\int\sin^2x\,dx\neq\frac{\sin^3x}3$.
 
 #C u3-substitution Integration by substitution
@@ -55,9 +55,9 @@ B: **Steps:**
 3. Rewrite the whole integral in $u$ (no $x$ may remain).
 4. Integrate, then put $u=g(x)$ back.
 X: Good choices: $u=\ln x$ when $\frac1x$ is present; $u=e^x$ when $e^x\,dx$ is present; $u=\tan x$ when $\sec^2x\,dx$ is present; $u=\sin x$ when $\cos x\,dx$ is present.
-Sometimes multiply top and bottom first to make the derivative appear: $\int\frac{x}{1+x\tan x}dx=\int\frac{x\cos x}{\cos x+x\sin x}dx$, and the numerator is the derivative of the denominator.
-E: $\int x(7x^2+8)^9dx$: $u=7x^2+8$, $du=14x\,dx$, so $\frac1{14}\int u^9du=\frac{u^{10}}{140}+c=\frac{(7x^2+8)^{10}}{140}+c$.
-E: $\int\frac{\sec^2x}{\tan x\ln\tan x}dx$: $u=\ln\tan x$, $du=\frac{\sec^2x}{\tan x}dx$, so $\int\frac{du}u=\ln|\ln\tan x|+c$.
+Sometimes multiply top and bottom first to make the derivative appear: $\int\frac{dx}{1+e^{x}}=\int\frac{e^{-x}}{e^{-x}+1}dx=-\ln(1+e^{-x})+c$, because the numerator is minus the derivative of the denominator.
+E: $\int x^2(x^3+1)^4dx$: $u=x^3+1$, $du=3x^2\,dx$, so $\frac13\int u^4du=\frac{u^5}{15}+c=\frac{(x^3+1)^5}{15}+c$.
+E: $\int\frac{dx}{x\ln x}$: $u=\ln x$, $du=\frac{dx}{x}$, so $\int\frac{du}u=\ln|\ln x|+c$.
 M: Leaving some $x$'s in the integral after substituting.
 
 #C u3-special-forms Standard forms with $a^2\pm x^2$
@@ -66,7 +66,7 @@ R: $\int\frac{dx}{a^2+x^2}=\frac1a\tan^{-1}\frac xa$, $\int\frac{dx}{\sqrt{a^2-x
 F: $$\int\frac{dx}{a^2+x^2}=\frac1a\tan^{-1}\frac xa,\quad \int\frac{dx}{\sqrt{a^2-x^2}}=\sin^{-1}\frac xa,\quad \int\frac{dx}{x\sqrt{x^2-a^2}}=\frac1a\sec^{-1}\frac xa$$ $$\int\frac{dx}{a^2-x^2}=\frac1{2a}\ln\left|\frac{a+x}{a-x}\right|,\quad \int\frac{dx}{x^2-a^2}=\frac1{2a}\ln\left|\frac{x-a}{x+a}\right|,\quad \int\frac{dx}{\sqrt{x^2\pm a^2}}=\ln\left|x+\sqrt{x^2\pm a^2}\right|$$
 B: After a substitution such as $u=e^x$ or $u=\sin x$, many integrals turn into one of these forms. Identify $a$ (for example $9-u^2$ gives $a=3$) and apply the formula.
 X: The log forms come from partial fractions: $\frac{1}{a^2-x^2}=\frac1{2a}\left(\frac1{a-x}+\frac1{a+x}\right)$.
-E: $\int\frac{e^x}{9-e^{2x}}dx$: $u=e^x$ gives $\int\frac{du}{9-u^2}=\frac16\ln\left|\frac{3+u}{3-u}\right|+c$.
+E: $\int\frac{\cos x}{4+\sin^2x}dx$: $u=\sin x$ gives $\int\frac{du}{4+u^2}=\frac12\tan^{-1}\frac u2+c=\frac12\tan^{-1}\left(\frac{\sin x}{2}\right)+c$.
 M: The $\frac1a$ in front of $\tan^{-1}$ is easy to forget.
 
 #C u3-trig-substitution Trigonometric substitution
@@ -74,7 +74,7 @@ pre: u3-substitution, f-trig-identities
 R: For $\sqrt{a^2-x^2}$ put $x=a\sin\theta$; for $\sqrt{a^2+x^2}$ put $x=a\tan\theta$; for $\sqrt{x^2-a^2}$ put $x=a\sec\theta$.
 B: The identity removes the square root: $a^2-a^2\sin^2\theta=a^2\cos^2\theta$, $a^2+a^2\tan^2\theta=a^2\sec^2\theta$, $a^2\sec^2\theta-a^2=a^2\tan^2\theta$.
 After integrating in $\theta$, draw a right triangle from the substitution to return to $x$.
-E: $\int\frac{dx}{(1+x^2)^{3/2}}$: $x=\tan\theta$, $dx=\sec^2\theta\,d\theta$, $(1+x^2)^{3/2}=\sec^3\theta$. The integral is $\int\cos\theta\,d\theta=\sin\theta=\frac{x}{\sqrt{1+x^2}}+c$.
+E: $\int\frac{dx}{(4-x^2)^{3/2}}$: $x=2\sin\theta$, $dx=2\cos\theta\,d\theta$, $(4-x^2)^{3/2}=8\cos^3\theta$. The integral is $\frac14\int\sec^2\theta\,d\theta=\frac14\tan\theta=\frac{x}{4\sqrt{4-x^2}}+c$.
 M: Forgetting to change $dx$ into $d\theta$.
 
 #C u3-by-parts Integration by parts
@@ -85,8 +85,8 @@ B: It comes from the product rule $(uv)'=u'v+uv'$ integrated and rearranged.
 Choose as $u$ the factor that becomes **simpler** when differentiated (a polynomial, $\ln x$, $\tan^{-1}x$), and as $dv$ something you can integrate ($e^{ax}$, $\sin$, $\cos$, $\sec^2$).
 **Integrals of single functions** such as $\int\ln x\,dx$ or $\int\sin^{-1}x\,dx$: take $dv=dx$ (i.e. multiply by 1).
 X: A polynomial of degree $n$ needs $n$ rounds of parts: $\int x^2e^{ax}dx$ needs two. The **tabular method** keeps it tidy: differentiate $x^2\to2x\to2\to0$, integrate $e^{ax}\to\frac{e^{ax}}a\to\frac{e^{ax}}{a^2}\to\frac{e^{ax}}{a^3}$, and combine with alternating signs $+,-,+$.
-E: $\int x\cos2x\,dx$: $u=x$, $dv=\cos2x\,dx$, $v=\frac{\sin2x}2$. Result $\frac{x\sin2x}2-\int\frac{\sin2x}2dx=\frac{x\sin2x}2+\frac{\cos2x}4+c$.
-E: $\int\ln x\,dx=x\ln x-\int x\cdot\frac1x\,dx=x\ln x-x+c$.
+E: $\int x\sin3x\,dx$: $u=x$, $dv=\sin3x\,dx$, $v=-\frac{\cos3x}3$. Result $-\frac{x\cos3x}3+\int\frac{\cos3x}3dx=-\frac{x\cos3x}3+\frac{\sin3x}9+c$.
+E: $\int\cos^{-1}x\,dx=x\cos^{-1}x+\int\frac{x}{\sqrt{1-x^2}}\,dx=x\cos^{-1}x-\sqrt{1-x^2}+c$.
 M: Choosing $u=e^x$ and $dv=x\,dx$ makes the integral harder, not easier.
 
 #C u3-ex-pattern The pattern $\int e^{x}\,[f(x)+f'(x)]\,dx=e^xf(x)$
@@ -95,20 +95,20 @@ R: If the integrand is $e^x$ times (a function + its derivative), the answer is 
 F: $$\int e^x\big[f(x)+f'(x)\big]dx=e^xf(x)+c,\qquad \int e^{kx}\big[kf(x)+f'(x)\big]dx=e^{kx}f(x)+c$$
 B: Why: by the product rule, $\frac{d}{dx}\left[e^xf(x)\right]=e^xf(x)+e^xf'(x)$.
 **How to use it:** split the bracket into a function and its derivative.
-$\left(\frac{1-x}{1+x^2}\right)^2=\frac{1+x^2-2x}{(1+x^2)^2}=\frac{1}{1+x^2}+\frac{-2x}{(1+x^2)^2}$, and the second piece is the derivative of the first. So $\int e^x\left(\frac{1-x}{1+x^2}\right)^2dx=\frac{e^x}{1+x^2}+c$.
-E: $\int e^{5x}(x^5+x^4+1)\,dx$: try $f=\frac{x^5+1}{5}$; then $5f+f'=x^5+1+x^4$ ✓, so the answer is $\frac{e^{5x}(x^5+1)}{5}+c$.
+$\int e^x(\sin x+\cos x)\,dx$: with $f=\sin x$ we have $f'=\cos x$, so the answer is $e^x\sin x+c$.
+E: $\int e^x\left(\ln x+\dfrac1x\right)dx$: $f=\ln x$ and $f'=\frac1x$, so the answer is $e^x\ln x+c$.
+E: $\int e^{2x}(2x^2+2x)\,dx$: try $f=x^2$; then $2f+f'=2x^2+2x$ ✓, so the answer is $e^{2x}x^2+c$.
 M: Applying the pattern when the two parts are not a function and its derivative.
 
 #C u3-cyclic-parts Repeated (cyclic) integration by parts
 pre: u3-by-parts
 R: Sometimes integrating by parts twice brings back the original integral $I$; then solve the equation for $I$.
-B: Typical cases: $e^{ax}$ times $\sin bx$ or $\cos bx$, and odd powers of $\sec$ or $\csc$.
+B: Typical cases: an exponential times a sine or cosine, and odd powers of $\sec$ or $\csc$.
 1. Call the integral $I$.
 2. Integrate by parts (twice if needed) until $I$ reappears on the right.
 3. Move it to the left and divide.
-X: Example: $I=\int e^x\cos x\,dx=e^x\sin x-\int e^x\sin x\,dx=e^x\sin x-\left[-e^x\cos x+\int e^x\cos x\,dx\right]=e^x\sin x+e^x\cos x-I$. So $2I=e^x(\sin x+\cos x)$ and $I=\frac{e^x}{2}(\sin x+\cos x)+c$.
-Keep the **same type** of choice in both rounds (here $u$ is always the trig part); switching would undo the first step.
-E: $\int\csc^3x\,dx$: write $\csc^3x=\csc x\cdot\csc^2x$, take $u=\csc x$, $dv=\csc^2x\,dx$; $\cot^2x=\csc^2x-1$ brings back $I$.
+X: Keep the **same type** of choice in every round (for example, always take the trigonometric factor as $u$); switching would simply undo the previous step.
+E: $I=\int\sec^3x\,dx$: take $u=\sec x$, $dv=\sec^2x\,dx$, $v=\tan x$. Then $I=\sec x\tan x-\int\sec x\tan^2x\,dx=\sec x\tan x-\int\sec x(\sec^2x-1)\,dx=\sec x\tan x-I+\int\sec x\,dx$. So $2I=\sec x\tan x+\ln|\sec x+\tan x|$ and $I=\frac12\sec x\tan x+\frac12\ln|\sec x+\tan x|+c$.
 M: Forgetting that the constant of integration is added only at the end.
 
 #C u3-sqrt-forms The integrals $\int\sqrt{x^2\pm a^2}\,dx$ and $\int\sqrt{a^2-x^2}\,dx$
@@ -127,14 +127,14 @@ B: **The four cases:**
 3. Irreducible quadratic $x^2+bx+c$: a numerator $Bx+C$.
 4. Repeated quadratic: $\frac{B_1x+C_1}{q}+\frac{B_2x+C_2}{q^2}$.
 **Finding the constants:** multiply through by the denominator, then put convenient values of $x$ (the roots) or compare coefficients.
-X: The "cover-up" shortcut for distinct linear factors: to find $A$ in $\frac{5x+7}{(x+1)(x+2)}$, cover $(x+1)$ and put $x=-1$ in the rest: $A=\frac{-5+7}{-1+2}=2$.
-E: $\frac{5x+7}{(x+1)(x+2)}=\frac2{x+1}+\frac3{x+2}$, so $\int=2\ln|x+1|+3\ln|x+2|+c$.
+X: The "cover-up" shortcut for distinct linear factors: to find $A$ in $\frac{x+5}{(x-1)(x+2)}$, cover $(x-1)$ and put $x=1$ in the rest: $A=\frac{1+5}{1+2}=2$.
+E: $\frac{x+5}{(x-1)(x+2)}=\frac2{x-1}-\frac1{x+2}$, so $\int=2\ln|x-1|-\ln|x+2|+c$.
 M: Using a constant (not $Bx+C$) over an irreducible quadratic.
 
 #C u3-improper-fraction Improper fractions: divide first
 pre: u3-partial-fractions
 R: If the degree of the numerator is at least the degree of the denominator, do long division first: quotient + remainder/denominator.
-B: $\dfrac{x^3+2x^2-x-1}{x^2-1}=x+2+\dfrac{1}{x^2-1}$: the polynomial part integrates directly and the proper fraction is split into partial fractions.
+B: $\dfrac{x^2+1}{x^2-1}=1+\dfrac{2}{x^2-1}$: the polynomial part integrates directly and the proper fraction is split into partial fractions.
 Also check whether the numerator and denominator share a factor; then the fraction simply cancels.
 M: Applying partial fractions to an improper fraction gives wrong constants.
 
@@ -144,13 +144,13 @@ R: $\displaystyle\int_a^bf(x)\,dx=F(b)-F(a)$, where $F$ is any antiderivative of
 F: $$\int_a^bf(x)\,dx=\Big[F(x)\Big]_a^b=F(b)-F(a)$$
 B: Find an antiderivative, substitute the **upper** limit, substitute the **lower** limit, and subtract. The constant $c$ would cancel, so it is left out.
 Geometrically, for $f\ge0$, $\int_a^bf\,dx$ is the area under the curve from $a$ to $b$.
-E: $\int_1^2(x^2+x)\,dx=\left[\frac{x^3}3+\frac{x^2}2\right]_1^2=\left(\frac83+2\right)-\left(\frac13+\frac12\right)=\frac{23}6$.
+E: $\int_0^2(3x^2-2x)\,dx=\left[x^3-x^2\right]_0^2=(8-4)-0=4$.
 M: Subtracting in the wrong order ($F(a)-F(b)$).
 
 #C u3-definite-sub Substitution in definite integrals
 pre: u3-definite, u3-substitution
 R: When you substitute $u=g(x)$ in a definite integral, change the limits too: $x=a\to u=g(a)$, $x=b\to u=g(b)$; then you never need to return to $x$.
-B: Example: $\int_0^4x\sqrt{4-x}\,dx$ with $u=4-x$: $x=0\to u=4$, $x=4\to u=0$, $dx=-du$ and $x=4-u$. The integral becomes $\int_4^0(4-u)\sqrt u\,(-du)=\int_0^4(4u^{1/2}-u^{3/2})\,du$.
+B: Example: $\int_0^{\pi/2}\sin x\cos^2x\,dx$ with $u=\cos x$: $x=0\to u=1$, $x=\frac\pi2\to u=0$, $du=-\sin x\,dx$. The integral becomes $\int_1^0u^2\,(-du)=\int_0^1u^2\,du=\frac13$.
 M: Changing the variable but keeping the old limits.
 
 #C u3-def-properties Properties of definite integrals
@@ -186,9 +186,9 @@ M: Using the odd-function rule on an interval that is not symmetric.
 #C u3-abs-integral Integrating piecewise and absolute-value functions
 pre: u3-definite, f-abs
 R: Split the interval at the points where the formula changes (where the inside of $|\,\cdot\,|$ is zero) and integrate each piece with its own formula.
-B: $\int_{-3}^4|4-x^2|\,dx$: $4-x^2\ge0$ on $[-2,2]$ and $<0$ outside. So
-$$\int_{-3}^{-2}(x^2-4)\,dx+\int_{-2}^{2}(4-x^2)\,dx+\int_{2}^{4}(x^2-4)\,dx.$$
-E: $\int_2^4|x-3|\,dx=\int_2^3(3-x)\,dx+\int_3^4(x-3)\,dx=\frac12+\frac12=1$.
+B: $\int_{-2}^2|x^2-1|\,dx$: $x^2-1<0$ on $(-1,1)$ and $\ge0$ outside. So
+$$\int_{-2}^{-1}(x^2-1)\,dx+\int_{-1}^{1}(1-x^2)\,dx+\int_{1}^{2}(x^2-1)\,dx=\frac43+\frac43+\frac43=4.$$
+E: $\int_0^3|x-1|\,dx=\int_0^1(1-x)\,dx+\int_1^3(x-1)\,dx=\frac12+2=\frac52$.
 M: Integrating $|f|$ as if it were $f$ over the whole interval.
 
 #C u3-ftc1 Differentiating an integral with variable limits
@@ -196,7 +196,7 @@ pre: u3-definite, u2-chain-rule
 R: $\dfrac{d}{dx}\displaystyle\int_a^xf(t)\,dt=f(x)$; with variable limits, $\dfrac{d}{dx}\int_{g(x)}^{h(x)}f(t)\,dt=f(h(x))h'(x)-f(g(x))g'(x)$.
 F: $$\frac{d}{dx}\int_{g(x)}^{h(x)}f(t)\,dt=f\big(h(x)\big)h'(x)-f\big(g(x)\big)g'(x)$$
 B: This is the first fundamental theorem: integrating and then differentiating gives the integrand back, evaluated at the upper limit. You never need to evaluate the integral itself.
-E: $\frac{d}{dt}\int_\pi^t\frac{\sin y}{1+\sqrt y}dy=\frac{\sin t}{1+\sqrt t}$.
+E: $\frac{d}{dx}\int_0^{x^2}\cos t\,dt=\cos(x^2)\cdot2x$.
 
 #C u3-area-under Area between a curve and the $x$-axis
 pre: u3-definite, f-zero-product
@@ -224,7 +224,7 @@ M: Subtracting top from bottom gives a negative area.
 pre: u3-area-under
 R: When curves are easier written as $x=g(y)$, use horizontal strips: area $=\displaystyle\int_c^d(\text{right}-\text{left})\,dy$.
 B: Useful for parabolas like $x=9-y^2$ or $y^2=2x+10$. Find the $y$-coordinates where the curves meet, and integrate the right curve minus the left curve with respect to $y$.
-E: Area between $x=9-y^2$ and the $y$-axis: $y$ from $-3$ to $3$, area $=\int_{-3}^3(9-y^2)\,dy=36$.
+E: Area between $x=4-y^2$ and the $y$-axis: $y$ from $-2$ to $2$, area $=\int_{-2}^2(4-y^2)\,dy=\frac{32}3$.
 
 #C u3-signed-area Signed area and total area
 pre: u3-area-under
@@ -245,7 +245,7 @@ pre: u3-antiderivative, f-e-number, f-logs
 R: If $\frac{dN}{dt}=kN$, then $N=N_0e^{kt}$; two data points fix $N_0$ and $k$.
 B: "The rate of growth is proportional to the number present" means $\frac{dN}{dt}=kN$. Separating, $\int\frac{dN}N=\int k\,dt$, so $\ln N=kt+c$ and $N=N_0e^{kt}$.
 Often $e^k$ turns out to be a nice number, giving $N=N_0\,b^t$.
-E: $N(0)=200$, $N(2)=1800$: $e^{2k}=9\Rightarrow e^k=3$, so $N=200\cdot3^t$.
+E: $N(0)=50$, $N(3)=400$: $e^{3k}=8\Rightarrow e^k=2$, so $N=50\cdot2^t$.
 
 #C u3-average-value Average value of a function
 pre: u3-definite
@@ -258,7 +258,7 @@ pre: f-e-number
 R: Each dose contributes its own decaying term; the total concentration is the sum of the contributions of all doses already given.
 B: If one dose gives $C(t)=C_0e^{-kt}$, a dose given at time $T$ contributes $C_0e^{-k(t-T)}$ for $t\ge T$ (and nothing before $T$). Add these for all doses given so far.
 Just before a new dose the total is the sum of the older doses; just after, add $C_0$.
-E: Doses at $t=0$ and $t=8$ with $C=12e^{-0.2t}$: at $t=10$, total $=12e^{-2}+12e^{-0.4}\approx9.67$.
+E: Doses at $t=0$ and $t=6$ with $C=10e^{-0.1t}$: at $t=9$, total $=10e^{-0.9}+10e^{-0.3}\approx4.07+7.41=11.47$.
 `);
 
 M12.addQuestions(3, String.raw`
@@ -1361,12 +1361,12 @@ E: It comes from integrating the product rule.
 
 #M
 c: u3-by-parts
-Q: $\displaystyle\int\ln x\,dx=$
-O: $\frac1x+c$
-O: $x\ln x+c$
-O*: $x\ln x-x+c$
-O: $\frac{(\ln x)^2}{2}+c$
-E: Parts with $u=\ln x$, $dv=dx$.
+Q: $\displaystyle\int xe^x\,dx=$
+O: $\frac{x^2}{2}e^x+c$
+O: $xe^x+c$
+O*: $xe^x-e^x+c$
+O: $xe^x+e^x+c$
+E: Parts with $u=x$, $dv=e^x\,dx$: $xe^x-\int e^x\,dx$.
 
 #M
 c: u3-ex-pattern

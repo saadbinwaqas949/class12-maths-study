@@ -30,7 +30,7 @@ E: A $v$–$t$ graph that is a trapezium with parallel sides 12 and 8 and height
 
 #C u7-units Converting km/h to m/s
 R: $1\ \text{km/h}=\dfrac{1000\text{ m}}{3600\text{ s}}=\dfrac{5}{18}\ \text{m/s}$, so multiply by $\frac5{18}$ (and by $\frac{18}5$ to go back).
-B: $36$ km/h $=36\times\frac5{18}=10$ m/s; $54$ km/h $=15$ m/s; $90$ km/h $=25$ m/s.
+B: $72$ km/h $=72\times\frac5{18}=20$ m/s; $18$ km/h $=5$ m/s; $108$ km/h $=30$ m/s.
 M: Using km/h together with seconds in the same equation.
 
 #C u7-suvat Equations of motion with constant acceleration
@@ -49,7 +49,7 @@ R: Under gravity alone the acceleration is $g\approx9.8$ m/s$^2$ downward: use t
 B: - **Dropped**: $u=0$.
 - **Thrown up with speed $u$**: at the top $v=0$, so the time to the top is $\frac ug$, the maximum height is $\frac{u^2}{2g}$, and the time to return to the hand is $\frac{2u}g$.
 - Two bodies moving at the same time: write each height as a function of $t$ and set them equal to find when they meet.
-E: Thrown up at 20 m/s: max height $\frac{400}{19.6}\approx20.4$ m after $\frac{20}{9.8}\approx2.04$ s.
+E: Thrown up at 14.7 m/s: max height $\frac{14.7^2}{19.6}\approx11.03$ m, reached after $\frac{14.7}{9.8}=1.5$ s.
 M: Using $+g$ for upward motion when up is taken as positive.
 
 #C u7-variable Motion with variable acceleration

@@ -25,7 +25,7 @@ B: Common moves:
 - treat it as a quadratic in $\cos x$ or $\tan x$ and factorise.
 **Never divide by** $\sin x$ or $\cos x$ unless you have checked it cannot be zero; take it out as a factor instead.
 X: For an equation in a multiple angle such as $\sin4x=k$, solve for $4x$ first (all solutions, with $+2n\pi$), then divide by 4.
-E: $2\cos^2x-3\cos x+1=0\Rightarrow(2\cos x-1)(\cos x-1)=0\Rightarrow\cos x=\frac12$ or $1$.
+E: $2\sin^2x-\sin x-1=0\Rightarrow(2\sin x+1)(\sin x-1)=0\Rightarrow\sin x=-\frac12$ or $1$.
 M: Dividing by $\sin x$ and losing the solutions $x=n\pi$.
 
 #C u10-extraneous Squaring and extraneous roots
@@ -49,7 +49,7 @@ R: Draw a diagram, mark right angles, write each angle with $\tan=\frac{\text{op
 B: - **Angle of elevation:** $\tan\theta=\frac{\text{height}}{\text{distance}}$.
 - **Angle subtended by an object** of height from $h_1$ to $h_2$ seen from distance $d$: $\theta=\tan^{-1}\frac{h_2}d-\tan^{-1}\frac{h_1}d$.
 - **Work done** by a force $F$ moving through $d$ at angle $\theta$: $W=Fd\cos\theta$.
-E: From 20 m away, the top of a tree is at $30^\circ$: height $=20\tan30^\circ=\frac{20}{\sqrt3}\approx11.55$ m.
+E: From 30 m away, the top of a tower is at an angle of elevation of $45^\circ$: height $=30\tan45^\circ=30$ m.
 `);
 
 M12.addQuestions(10, String.raw`
@@ -305,12 +305,12 @@ E: $\tan(x+\pi)=\tan x$.
 
 #M
 c: u10-trig-eq
-Q: The solutions of $\cos x=-\frac12$ in $[0,2\pi]$ are
-O: $\frac\pi3,\frac{5\pi}3$
-O*: $\frac{2\pi}3,\frac{4\pi}3$
-O: $\frac\pi6,\frac{11\pi}6$
+Q: The solutions of $\sin x=-\frac12$ in $[0,2\pi]$ are
+O: $\frac\pi6,\frac{5\pi}6$
+O*: $\frac{7\pi}6,\frac{11\pi}6$
+O: $\frac{4\pi}3,\frac{5\pi}3$
 O: $\frac{5\pi}6,\frac{7\pi}6$
-E: Reference angle $\frac\pi3$; cosine is negative in Q II and Q III.
+E: Reference angle $\frac\pi6$; sine is negative in Q III and Q IV.
 
 #M
 c: u10-identities

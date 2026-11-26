@@ -21,8 +21,8 @@ pre: u1-quad-factored, f-complete-square
 R: The vertex is the turning point; the axis of symmetry is the vertical line through it; intercepts come from putting $x=0$ or $y=0$.
 B: For $y=ax^2+bx+c$ the axis is $x=-\dfrac{b}{2a}$. Completing the square gives the vertex form $y=a(x-p)^2+q$ with vertex $(p,q)$.
 A good sketch shows: the direction, the vertex, both intercepts and the symmetry.
-X: When the roots are not nice numbers, use the vertex form instead of factors. For example $y=x^2+2x+1=(x+1)^2$ has vertex $(-1,0)$.
-E: $y=2x^2+x-3$: axis $x=-\frac{1}{4}$, vertex $y=2\cdot\frac1{16}-\frac14-3=-\frac{25}{8}$, so the vertex is $\left(-\frac14,-\frac{25}8\right)$.
+X: When the roots are not nice numbers, use the vertex form instead of factors. For example $y=x^2-6x+9=(x-3)^2$ has vertex $(3,0)$.
+E: $y=x^2+4x+1$: axis $x=-\frac{4}{2}=-2$, vertex $y=4-8+1=-3$, so the vertex is $(-2,-3)$.
 M: The axis formula is $-\frac{b}{2a}$, not $\frac{b}{2a}$.
 
 #C u1-quad-from-graph Finding a quadratic from its graph
@@ -39,7 +39,7 @@ M: A root at $x=-2$ gives the factor $(x+2)$, not $(x-2)$.
 #C u1-alg-trans Algebraic and transcendental functions
 pre: f-functions
 R: Algebraic functions are built from $x$ by $+,-,\times,\div$ and roots; any function that is not algebraic (exponential, logarithmic, trigonometric) is transcendental.
-B: Examples of algebraic functions: polynomials, $\dfrac{2x-3}{x+1}$, $\sqrt{x^2+2x}$.
+B: Examples of algebraic functions: polynomials such as $x^3-2x$, rational functions such as $\dfrac{x+1}{x-4}$, and roots such as $\sqrt[3]{x^2+5}$.
 Transcendental functions "transcend" algebra: $a^x$, $\ln x$, $\sin x$, $\sin^{-1}x$ and combinations of them.
 E: $\sqrt{x^2+1}$ is algebraic; $e^{x}+x^2$ is transcendental (it contains $e^x$).
 
@@ -53,8 +53,8 @@ B: In $a^x$ the variable is in the **exponent**. Key facts:
 - $a^0=1$, so every exponential graph passes through **$(0,1)$**.
 - Its values cover every positive number, so the **range is $(0,\infty)$**.
 - Different inputs give different outputs: $a^x$ is **one-to-one**, so $a^p=a^q\Rightarrow p=q$.
-With $a>1$ (like $2^x$, $3^x$, $e^x$) the function models **growth**; with $0<a<1$ (like $(\frac12)^x$) it models **decay**.
-X: To sketch, make a table. For $3^x$: $x=-2,-1,0,1,2$ gives $\frac19,\frac13,1,3,9$. The values get very small on the left (but stay positive) and grow quickly on the right.
+The base can be any positive number except 1, for example $2^x$, $10^x$ or $e^x$.
+X: To sketch, make a table of values, plot the points and join them with a smooth curve that stays above the $x$-axis. For $2^x$: $x=-2,-1,0,1,2$ gives $\frac14,\frac12,1,2,4$.
 The base $e\approx2.718$ gives the **natural exponential** $e^x$, the most important one in calculus.
 E: For $f(x)=2^{x}$: $f(-1)=\tfrac12$, $f(0)=1$, $f(3)=8$. All values are positive.
 M: $a^x$ is never zero or negative, so equations like $3^x=-\tfrac32$ have **no** solution.
@@ -111,7 +111,7 @@ R: $y=\log_ax$ is the inverse of $y=a^x$: domain $(0,\infty)$, range $\R$; $\ln 
 B: Because $\log_a x$ undoes $a^x$, the facts swap: the domain of $\log_ax$ is the range of $a^x$, namely $x>0$, and its range is all real numbers.
 Its graph is the reflection of the graph of $a^x$ in the line $y=x$, and it passes through $(1,0)$ because $\log_a1=0$.
 X: Solving any equation or inequality with $\log$ starts by writing the **domain conditions**: everything inside a logarithm must be positive. Answers that break these conditions are rejected.
-E: Domain of $\ln(x^2-1)$: $x^2-1>0\Rightarrow x<-1$ or $x>1$.
+E: Domain of $\ln(x^2-9)$: $x^2-9>0\Rightarrow x<-3$ or $x>3$.
 M: Forgetting the domain and keeping a "solution" that makes a log argument zero or negative.
 
 #C u1-modulus The modulus (absolute value) function
@@ -119,8 +119,8 @@ pre: f-abs
 R: $f(x)=|x|$ is a V-shaped graph with its corner at the origin and arms $y=x$ (right) and $y=-x$ (left).
 B: $|x|$ is defined piece by piece: $x$ for $x\ge0$ and $-x$ for $x<0$. Points: $(0,0),(2,2),(-2,2)$.
 After transformations, $y=a|bx-c|+d$ is still a V; the corner is where $bx-c=0$.
-E: $y=|x-7|$ has its corner at $(7,0)$.
-M: The corner of $|2x-7|$ is at $x=3.5$, not at $x=7$.
+E: $y=|x+2|$ has its corner at $(-2,0)$.
+M: The corner of $|2x-5|$ is at $x=2.5$, not at $x=5$.
 
 #C u1-inverse-graph Inverse functions from graphs
 pre: f-inverse-fn
@@ -136,7 +136,7 @@ F: $$y=f(x-h)+k:\quad \text{right } h \ (\text{left if } h<0),\quad \text{up } k
 B: **Horizontal shifts work "opposite" to the sign.** In $f(x-3)$ the graph moves **right** by 3, because the new graph reaches the old value $f(0)$ only when $x-3=0$, i.e. at $x=3$.
 **Vertical shifts work as expected:** $f(x)+2$ lifts every point by 2.
 X: Shifting does not change the shape, only the position. A point $(a,b)$ on $y=f(x)$ moves to $(a+h,\ b+k)$ on $y=f(x-h)+k$.
-E: $f(x)=\ln x$ shifted 1 unit right is $\ln(x-1)$; then 3 units up is $\ln(x-1)+3$.
+E: $f(x)=e^x$ shifted 2 units left is $e^{x+2}$; then 1 unit down is $e^{x+2}-1$.
 M: $f(x+2)$ is a shift **left** by 2.
 
 #C u1-scale Stretching, compressing and reflecting
@@ -150,7 +150,7 @@ B: - **Vertical stretch by 2:** multiply the whole function by 2: $y=2f(x)$.
 - $y=-f(x)$ reflects in the $x$-axis; $y=f(-x)$ reflects in the $y$-axis.
 X: Horizontal changes act on $x$ *before* $f$ is applied, so they feel backwards: multiplying $x$ by 2 makes the graph narrower, not wider.
 A point $(p,q)$ on $y=f(x)$ moves to $(p,aq)$ on $y=af(x)$ and to $(\tfrac pb,q)$ on $y=f(bx)$.
-E: Vertical stretch of $\sqrt x$ by 2: $y=2\sqrt x$. The point $(4,2)$ moves to $(4,4)$.
+E: A vertical stretch of $y=x^2$ by 3 gives $y=3x^2$; the point $(1,1)$ moves to $(1,3)$.
 M: "Compress vertically by a factor 2" means multiply by $\tfrac12$, not by 2.
 
 #C u1-transform-sequence Applying transformations in order
@@ -161,9 +161,9 @@ B: **Rules for each step:**
 - horizontal compression by $b$: replace every $x$ by $bx$;
 - vertical stretch by $a$: multiply the whole current expression by $a$;
 - shift up $k$: add $k$ to the whole expression.
-X: Order matters. Shifting $|x|$ right by 7 gives $|x-7|$; *then* compressing horizontally by 2 replaces $x$ by $2x$, giving $|2x-7|$, whose corner is at $x=3.5$. Doing it the other way round ($|2x|$ then shift) would give $|2(x-7)|$, a different graph.
+X: Order matters. Shifting $|x|$ right by 3 gives $|x-3|$; *then* compressing horizontally by 2 replaces $x$ by $2x$, giving $|2x-3|$, whose corner is at $x=1.5$. Doing it the other way round ($|2x|$ then shift) would give $|2(x-3)|=|2x-6|$, a different graph.
 E: Start with $f(x)=\dfrac{x}{x+1}$. Vertical stretch by 2: $\dfrac{2x}{x+1}$. Shift 1 down: $\dfrac{2x}{x+1}-1=\dfrac{x-1}{x+1}$.
-M: Applying a horizontal change to the constant terms too: after $|x-7|$, compressing gives $|2x-7|$, not $|2x-14|$.
+M: Applying a horizontal change to the constant terms too: after $|x-3|$, compressing gives $|2x-3|$, not $|2x-6|$.
 
 #C u1-exp-eq Solving exponential equations
 pre: f-indices, f-logs, f-factor, u1-exponential
@@ -197,8 +197,8 @@ B: **Steps for a log inequality:**
 2. Compare the arguments, keeping the sign if the base is $>1$, reversing it if $0<$ base $<1$.
 3. Solve, then **intersect** with the domain.
 For exponential inequalities, a substitution $u=a^x$ often leads to a quadratic inequality; remember $u>0$.
-X: Why the reversal? With base $\tfrac13$, bigger inputs give smaller logs: $\log_{1/3}9=-2<\log_{1/3}3=-1$ even though $9>3$.
-E: $\log_2(x-1)\ge\log_2(5-x)$: domain $1<x<5$; base $2>1$ so $x-1\ge5-x\Rightarrow x\ge3$. Answer $[3,5)$.
+X: Check the rule with numbers: $\log_{1/3}9=-2$ and $\log_{1/3}3=-1$, so $\log_{1/3}9<\log_{1/3}3$ even though $9>3$. With a base below 1 the order flips.
+E: $\log_3(x+1)>\log_3(7-x)$: domain $-1<x<7$; base $3>1$ so $x+1>7-x\Rightarrow x>3$. Answer $(3,7)$.
 M: Forgetting to flip the inequality for a base between 0 and 1.
 
 #C u1-growth-decay Exponential growth and decay
@@ -218,13 +218,13 @@ F: $$L=10\log_{10}\frac{I}{I_0},\qquad I=I_0\cdot10^{L/10}$$
 B: Every factor of $10$ in intensity adds $10$ dB. To go backwards from $L$ to $I$, divide by 10 and undo the log: $\dfrac{I}{I_0}=10^{L/10}$.
 E: $I=10^{-9}$: $L=10\log\dfrac{10^{-9}}{10^{-12}}=10\log10^3=30$ dB.
 
-#C u1-compound-interest Compound interest
-pre: f-indices, f-logs, f-e-number
-R: Compounded $n$ times a year: $A=P\left(1+\dfrac rn\right)^{nt}$; annually $A=P(1+r)^t$; continuously $A=Pe^{rt}$.
-F: $$A=P\Big(1+\frac rn\Big)^{nt},\qquad A=P(1+r)^t\ (\text{annual}),\qquad A=Pe^{rt}\ (\text{continuous})$$
+#C u1-compound-interest Compound interest (compounded annually)
+pre: f-indices, f-logs
+R: A principal $P$ invested at a yearly rate $r$ (as a decimal), compounded annually, grows to $A=P(1+r)^t$ after $t$ years.
+F: $$A=P(1+r)^t,\qquad t=\frac{\ln(A/P)}{\ln(1+r)}$$
 B: $P$ is the principal, $r$ the yearly rate as a decimal ($6\%=0.06$), $t$ the time in years.
 To find $t$, divide by $P$ and take logs: $t=\dfrac{\ln(A/P)}{\ln(1+r)}$.
-E: Rs 1000 at 10% compounded annually for 2 years: $A=1000(1.1)^2=$ Rs 1210.
+E: Rs 2000 at 5% compounded annually for 2 years: $A=2000(1.05)^2=$ Rs 2205.
 M: Using $6$ instead of $0.06$ for the rate.
 `);
 
@@ -468,6 +468,18 @@ D: For $x<0$: $\dfrac{1}{x}-\dfrac{\sqrt{1+x^2}}{x}=\dfrac1x+\dfrac{\sqrt{1+x^2}
 S: Taking $\ln$: $\ \csch^{-1}x=\ln\left(\dfrac1x+\sqrt{\dfrac1{x^2}+1}\right)$. $\blacksquare$
 C: f-logs
 A: $\csch^{-1}x=\ln\left(\frac1x+\sqrt{\frac1{x^2}+1}\right)$ for all $x\ne0$.
+
+#Q 1.3 2(i)
+Q: Let $f(x)=\sin^{-1}x$. State the domain and range of $f$ and $f^{-1}$.
+N: Parts (ii) and (iii) of this question ask for graphs of the inverse sine function. The board removed graphs of inverse trigonometric functions from the 2026–27 syllabus, so only part (i) is covered here.
+T: u9-inverse-trig, f-inverse-fn
+S: $f(x)=\sin^{-1}x$ is the inverse of the sine function restricted to $\left[-\frac\pi2,\frac\pi2\right]$, the interval on which sine is one-to-one and takes every value from $-1$ to $1$ exactly once.
+C: u9-inverse-trig
+S: Domain of $f$: the values that sine can take, $[-1,1]$. Range of $f$: the restricted interval $\left[-\frac\pi2,\frac\pi2\right]$.
+S: The inverse of $f$ is $f^{-1}(x)=\sin x$ on $\left[-\frac\pi2,\frac\pi2\right]$: its domain is $\left[-\frac\pi2,\frac\pi2\right]$ and its range is $[-1,1]$.
+W: A function and its inverse swap their domain and range.
+C: f-inverse-fn
+A: $f$: domain $[-1,1]$, range $\left[-\frac\pi2,\frac\pi2\right]$. $\ f^{-1}(x)=\sin x$: domain $\left[-\frac\pi2,\frac\pi2\right]$, range $[-1,1]$.
 
 #Q 1.3 4
 Q: Given $f(x)=\sqrt x$, find the equation of the function after: (i) a vertical stretch by a factor of 2; (ii) a horizontal shift of 3 units to the right; (iii) applying both (i) and (ii).
@@ -716,12 +728,12 @@ E: The vertex lies midway between the roots because the parabola is symmetric.
 
 #M
 c: u1-quad-factored
-Q: The graph of $y=3(x-1)^2$ meets the $x$-axis at
+Q: The graph of $y=2(x+4)^2$ meets the $x$-axis at
 O: two points
 O*: exactly one point, where it touches the axis
 O: no point
 O: the origin
-E: A repeated root means the parabola touches the axis at $(1,0)$, its vertex.
+E: A repeated root means the parabola touches the axis at $(-4,0)$, its vertex.
 
 #M
 c: u1-exponential
@@ -734,12 +746,12 @@ E: $a^0=1$ for every allowed base.
 
 #M
 c: u1-exponential
-Q: The range of $f(x)=3^x$ is
+Q: The range of $f(x)=5^x$ is
 O: $\R$
 O: $[0,\infty)$
 O*: $(0,\infty)$
 O: $(1,\infty)$
-E: $3^x$ is always positive and takes every positive value.
+E: $5^x$ is always positive and takes every positive value.
 
 #M
 c: u1-hyp-identities
@@ -851,12 +863,12 @@ E: $10\log100=10\times2=20$.
 
 #M
 c: u1-compound-interest
-Q: The amount when $P$ is compounded continuously at rate $r$ for $t$ years is
-O: $P(1+r)^t$
-O: $P(1+rt)$
-O*: $Pe^{rt}$
-O: $P\left(1+\frac rt\right)^t$
-E: Continuous compounding is the limit of $P(1+\frac rn)^{nt}$ as $n\to\infty$, which is $Pe^{rt}$.
+Q: Rs 1000 invested at $10\%$ per annum, compounded annually, amounts after 2 years to
+O: Rs 1200
+O*: Rs 1210
+O: Rs 1100
+O: Rs 1221
+E: $A=1000(1.1)^2=1210$; in the second year interest is also earned on the first year's interest.
 
 #M
 c: u1-growth-decay

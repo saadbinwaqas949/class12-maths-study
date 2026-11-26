@@ -33,11 +33,6 @@ F: $$\vr'(t)=\lim_{\Delta t\to0}\frac{\vr(t+\Delta t)-\vr(t)}{\Delta t}=f'(t)\,\
 B: All the ordinary rules (product, quotient, chain) are used inside each component. The derivative vector $\vr'(t)$ points along the tangent to the curve.
 If a component is undefined at the point but has a limit there (like $\frac{\sin t^2}{t}$ at $t=0$), use the limit definition of the derivative for that component.
 E: $\vr(t)=\sec t\,\ii+\tan t\,\jj-\cos t\,\kk$ at $t=\frac\pi4$: $\vr'=\sec t\tan t\,\ii+\sec^2t\,\jj+\sin t\,\kk=\sqrt2\,\ii+2\,\jj+\frac{1}{\sqrt2}\kk$.
-
-#C u11-velocity Velocity and acceleration vectors
-pre: u11-derivative
-R: If $\vr(t)$ is the position, then $\vv(t)=\vr'(t)$ is the velocity, $\va(t)=\vr''(t)$ the acceleration, and $|\vv(t)|$ the speed.
-B: The velocity vector is tangent to the path; its length is the speed and the unit vector $\frac{\vv}{|\vv|}$ gives the direction of motion.
 `);
 
 M12.addQuestions(11, String.raw`

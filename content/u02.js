@@ -20,9 +20,9 @@ B: Write roots and reciprocals as powers first: $\sqrt x=x^{1/2}\Rightarrow\frac
 The derivative of a constant is $0$.
 **Product rule:** "first $\times$ derivative of second + second $\times$ derivative of first".
 **Quotient rule:** "bottom $\times$ derivative of top minus top $\times$ derivative of bottom, all over bottom squared". The order matters because of the minus sign.
-X: Before using the quotient rule, see if the expression simplifies. $(1+\csc t)\sin t=\sin t+1$ needs no product rule at all.
-E: $\dfrac{d}{dx}\left(x^2\cos x\right)=2x\cos x+x^2(-\sin x)=2x\cos x-x^2\sin x$.
-E: $\dfrac{d}{dx}\dfrac{\ln x}{x^2}=\dfrac{\frac1x\cdot x^2-\ln x\cdot2x}{x^4}=\dfrac{1-2\ln x}{x^3}$.
+X: Before using the quotient rule, see if the expression simplifies. $\dfrac{x^2+x}{x}=x+1$ (for $x\ne0$) needs no quotient rule at all.
+E: $\dfrac{d}{dx}\left(x^3\sin x\right)=3x^2\sin x+x^3\cos x$.
+E: $\dfrac{d}{dx}\dfrac{x}{x^2+1}=\dfrac{1\cdot(x^2+1)-x\cdot2x}{(x^2+1)^2}=\dfrac{1-x^2}{(x^2+1)^2}$.
 M: $\left(\frac uv\right)'\neq\frac{u'}{v'}$, and $(uv)'\neq u'v'$.
 
 #C u2-trig-derivs Derivatives of trigonometric functions
@@ -45,12 +45,12 @@ B: Spot the **inside** function $u$. Then:
 2. multiply by $\dfrac{du}{dx}$.
 For several layers, peel them off one at a time, multiplying a factor for each layer.
 X: Examples of layers: $\sin(x^2-x)$ has outer $\sin$, inner $x^2-x$, so the derivative is $\cos(x^2-x)\cdot(2x-1)$.
-$\sin^3(\cos2v)$ has three layers: cube → sine → cosine of $2v$ → $2v$. Each layer contributes a factor:
-$$3\sin^2(\cos2v)\cdot\cos(\cos2v)\cdot(-\sin2v)\cdot2$$
+$\tan^3(5x^2+1)$ has three layers: cube → tangent → $5x^2+1$. Each layer contributes a factor:
+$$3\tan^2(5x^2+1)\cdot\sec^2(5x^2+1)\cdot10x$$
 A useful special case is the **general power rule**: $\dfrac{d}{dx}[u]^n=n[u]^{n-1}u'$.
-E: $\dfrac{d}{dx}\sqrt{\sin x}=\dfrac{1}{2\sqrt{\sin x}}\cdot\cos x$.
-E: $\dfrac{d}{dx}\cot(x^2)=-\csc^2(x^2)\cdot2x$.
-M: Forgetting to multiply by the derivative of the inside, e.g. writing $\frac{d}{dx}\cos\sqrt x=-\sin\sqrt x$ (the factor $\frac1{2\sqrt x}$ is missing).
+E: $\dfrac{d}{dx}\sqrt{\cos x}=\dfrac{1}{2\sqrt{\cos x}}\cdot(-\sin x)=-\dfrac{\sin x}{2\sqrt{\cos x}}$.
+E: $\dfrac{d}{dx}\tan(x^3)=\sec^2(x^3)\cdot3x^2$.
+M: Forgetting to multiply by the derivative of the inside, e.g. writing $\frac{d}{dx}\sin3x=\cos3x$ (the factor $3$ is missing).
 
 #C u2-parametric Parametric differentiation
 pre: u2-chain-rule
@@ -59,7 +59,7 @@ F: $$\frac{dy}{dx}=\frac{\;dy/dt\;}{\;dx/dt\;},\qquad \frac{d^2y}{dx^2}=\frac{\f
 B: Differentiate $x$ and $y$ separately with respect to $t$, then divide.
 For the **second derivative**, differentiate $\frac{dy}{dx}$ (a function of $t$) with respect to $t$ and divide by $\frac{dx}{dt}$ **again**.
 X: Why the extra division in $y''$? Because $y''=\dfrac{d}{dx}\left(y'\right)=\dfrac{d}{dt}(y')\cdot\dfrac{dt}{dx}$ by the chain rule, and $\dfrac{dt}{dx}=\dfrac{1}{dx/dt}$.
-E: $x=t^2,\ y=2t^3$: $\dfrac{dy}{dx}=\dfrac{6t^2}{2t}=3t$, and $\dfrac{d^2y}{dx^2}=\dfrac{3}{2t}$.
+E: $x=2t+1,\ y=t^2$: $\dfrac{dy}{dx}=\dfrac{2t}{2}=t$, and $\dfrac{d^2y}{dx^2}=\dfrac{1}{2}$.
 M: $\dfrac{d^2y}{dx^2}$ is **not** $\dfrac{d^2y/dt^2}{d^2x/dt^2}$.
 
 #C u2-implicit Implicit differentiation
@@ -71,7 +71,7 @@ B: Steps:
 3. Factor out $\frac{dy}{dx}$ and divide.
 Products like $xy$ need the product rule: $\frac{d}{dx}(xy)=y+x\frac{dy}{dx}$.
 X: Implicit differentiation is how we find slopes on curves like circles and ellipses, where $y$ is not given as one formula in $x$. It also proves the derivatives of inverse functions: from $x=\sin y$, $1=\cos y\cdot y'$.
-E: $x^2+y^2=25\Rightarrow2x+2yy'=0\Rightarrow y'=-\dfrac xy$.
+E: $x^2+xy+y^2=3\Rightarrow2x+(y+xy')+2yy'=0\Rightarrow y'=-\dfrac{2x+y}{x+2y}$.
 M: Writing $\frac{d}{dx}(y^2)=2y$ without the factor $y'$.
 
 #C u2-inv-trig-derivs Derivatives of inverse trigonometric functions
@@ -80,7 +80,7 @@ R: $(\sin^{-1}x)'=\frac1{\sqrt{1-x^2}}$, $(\cos^{-1}x)'=-\frac1{\sqrt{1-x^2}}$, 
 F: $$\frac{d}{dx}\sin^{-1}x=\frac1{\sqrt{1-x^2}},\quad \frac{d}{dx}\tan^{-1}x=\frac1{1+x^2},\quad \frac{d}{dx}\sec^{-1}x=\frac1{|x|\sqrt{x^2-1}}$$ $$\text{and the co- versions have a minus sign: } (\cos^{-1}x)'=-\tfrac1{\sqrt{1-x^2}},\ (\cot^{-1}x)'=-\tfrac1{1+x^2},\ (\csc^{-1}x)'=-\tfrac1{|x|\sqrt{x^2-1}}$$
 B: With an inside function, use the chain rule: $\dfrac{d}{dx}\sin^{-1}u=\dfrac{u'}{\sqrt{1-u^2}}$, $\dfrac{d}{dx}\tan^{-1}u=\dfrac{u'}{1+u^2}$.
 X: **Proof for $\sin^{-1}$:** let $y=\sin^{-1}x$, so $x=\sin y$ with $-\frac\pi2\le y\le\frac\pi2$. Differentiate: $1=\cos y\,y'$, so $y'=\frac1{\cos y}$. On that interval $\cos y\ge0$, hence $\cos y=\sqrt{1-\sin^2y}=\sqrt{1-x^2}$.
-E: $\dfrac{d}{dx}\sin^{-1}\dfrac xa=\dfrac{1}{\sqrt{1-x^2/a^2}}\cdot\dfrac1a=\dfrac1{\sqrt{a^2-x^2}}\ (a>0)$.
+E: $\dfrac{d}{dx}\tan^{-1}(x^2)=\dfrac{1}{1+x^4}\cdot2x=\dfrac{2x}{1+x^4}$.
 M: $\dfrac{d}{dx}\tan^{-1}x$ is $\dfrac1{1+x^2}$, not $\sec^2x$ and not $\dfrac{1}{\tan x}$.
 
 #C u2-exp-derivs Derivatives of exponential functions
@@ -91,15 +91,15 @@ B: $e^x$ is its own derivative, which is why $e$ is the natural base.
 For other bases an extra factor $\ln a$ appears: $(2^x)'=2^x\ln2$.
 X: From first principles, $\dfrac{a^{x+h}-a^x}{h}=a^x\cdot\dfrac{a^h-1}{h}\to a^x\ln a$, using the standard limit $\lim\limits_{h\to0}\frac{a^h-1}h=\ln a$.
 E: $\dfrac{d}{dx}e^{\sin^2x}=e^{\sin^2x}\cdot2\sin x\cos x=e^{\sin^2x}\sin2x$.
-E: $\dfrac{d}{dx}e^{1/x}=e^{1/x}\cdot\left(-\dfrac1{x^2}\right)$.
-M: $\dfrac{d}{dx}e^{x\cos x}$ is not $x\cos x\,e^{x\cos x-1}$; exponentials are not powers.
+E: $\dfrac{d}{dx}e^{3x^2}=e^{3x^2}\cdot6x$.
+M: $\dfrac{d}{dx}e^{x^2}$ is not $x^2e^{x^2-1}$; exponentials are not powers. It is $2xe^{x^2}$.
 
 #C u2-log-derivs Derivatives of logarithmic functions
 pre: u2-chain-rule, f-logs
 R: $(\ln x)'=\frac1x$, $(\log_ax)'=\frac1{x\ln a}$; with an inside function, $(\ln u)'=\frac{u'}{u}$.
 F: $$\frac{d}{dx}\ln x=\frac1x,\qquad \frac{d}{dx}\log_ax=\frac1{x\ln a},\qquad \frac{d}{dx}\ln u=\frac{u'}{u}$$
-B: **Simplify with log laws before differentiating.** $\ln\sqrt{\frac{1-x^2}{1+x^2}}=\tfrac12\ln(1-x^2)-\tfrac12\ln(1+x^2)$ is far easier to differentiate than the original.
-X: $\ln(1-\cos^2x)=\ln(\sin^2x)=2\ln|\sin x|$, whose derivative is $2\cot x$. Using identities first often turns a messy derivative into one line.
+B: **Simplify with log laws before differentiating.** $\ln\dfrac{(x+1)^3}{x-2}=3\ln(x+1)-\ln(x-2)$ is far easier to differentiate than the original.
+X: $\ln(1+\tan^2x)=\ln(\sec^2x)=2\ln|\sec x|$, whose derivative is $2\tan x$. Using identities first often turns a messy derivative into one line.
 E: $\dfrac{d}{dx}\ln(\cos e^x)=\dfrac{-\sin e^x\cdot e^x}{\cos e^x}=-e^x\tan e^x$.
 M: $\dfrac{d}{dx}\ln(5x)=\dfrac1x$ (not $\dfrac5x$), because $\dfrac{5}{5x}=\dfrac1x$.
 
@@ -109,8 +109,8 @@ R: For products, quotients and powers like $x^{x^2}$: take $\ln$ of both sides, 
 B: 1. $\ln y=\ln(\text{right side})$, expanded with log laws.
 2. Differentiate: $\dfrac{y'}{y}=\dots$
 3. $y'=y\times(\dots)$, then substitute $y$ back.
-X: This is the only practical way to differentiate a variable raised to a variable power: $y=x^{x^2}\Rightarrow\ln y=x^2\ln x\Rightarrow\dfrac{y'}y=2x\ln x+x$.
-E: $y=\dfrac{\sqrt{x^2-1}\,(2x+1)}{(x^3-1)^{3/2}}$: $\ln y=\tfrac12\ln(x^2-1)+\ln(2x+1)-\tfrac32\ln(x^3-1)$, so $\dfrac{y'}y=\dfrac{x}{x^2-1}+\dfrac{2}{2x+1}-\dfrac{9x^2}{2(x^3-1)}$.
+X: This is the only practical way to differentiate a variable raised to a variable power: $y=x^{\sin x}\Rightarrow\ln y=\sin x\ln x\Rightarrow\dfrac{y'}y=\cos x\ln x+\dfrac{\sin x}{x}$.
+E: $y=\dfrac{(x+1)^2\sqrt{x-3}}{(x+4)^3}$: $\ln y=2\ln(x+1)+\tfrac12\ln(x-3)-3\ln(x+4)$, so $\dfrac{y'}y=\dfrac{2}{x+1}+\dfrac{1}{2(x-3)}-\dfrac{3}{x+4}$.
 M: Forgetting to multiply by $y$ at the end.
 
 #C u2-tangent-normal Tangent and normal lines
@@ -150,7 +150,7 @@ pre: u2-inc-dec
 R: A stationary point has $f'(c)=0$; a critical point has $f'(c)=0$ or $f'(c)$ undefined. Local maxima and minima can only occur at critical points (or at ends of an interval).
 B: At a **local maximum** $f'$ changes from $+$ to $-$; at a **local minimum** from $-$ to $+$ (the first derivative test). If the sign does not change, it is neither.
 X: $f(x)=x^{2/3}$ has $f'(x)=\frac{2}{3x^{1/3}}$, undefined at $x=0$: a critical point that is a minimum (a sharp corner). $|x|$ behaves the same way.
-E: $f(x)=x^2-x-2$: $f'=2x-1=0$ at $x=\frac12$; $f'$ goes from $-$ to $+$, so a local minimum $f\left(\frac12\right)=-\frac94$.
+E: $f(x)=x^2-6x+5$: $f'=2x-6=0$ at $x=3$; $f'$ goes from $-$ to $+$, so a local minimum $f(3)=-4$.
 
 #C u2-extrema-interval Absolute (global) and local extrema on an interval
 pre: u2-critical
@@ -168,7 +168,7 @@ pre: u2-critical, u2-higher
 R: At a stationary point ($f'(c)=0$): $f''(c)<0$ gives a local maximum, $f''(c)>0$ a local minimum; $f''(c)=0$ means the test is inconclusive.
 F: $$f'(c)=0:\quad f''(c)<0\Rightarrow\text{max},\qquad f''(c)>0\Rightarrow\text{min}$$
 B: Picture it: $f''>0$ means the graph bends upward (like a cup), so the stationary point is a bottom; $f''<0$ means it bends downward (a cap), a top.
-E: $f(x)=x^4-8x^2+2$: $f'=4x(x^2-4)$, stationary at $0,\pm2$; $f''=12x^2-16$: $f''(0)=-16$ (max), $f''(\pm2)=32$ (min).
+E: $f(x)=x^3-3x$: $f'=3x^2-3=0$ at $x=\pm1$; $f''=6x$: $f''(1)=6>0$ (minimum $f(1)=-2$), $f''(-1)=-6<0$ (maximum $f(-1)=2$).
 M: The test says nothing when $f''(c)=0$; then use the sign of $f'$ instead.
 
 #C u2-linearization Linearization (local linear approximation)

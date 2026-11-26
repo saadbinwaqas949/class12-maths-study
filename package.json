@@ -1,15 +1,14 @@
 {
-  "name": "study_web",
+  "name": "class12-maths-study",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Class 12 Mathematics study site (Punjab / Lahore Board, 2026-27 syllabus): solved exercises in Review, Study and Deep-study modes, practice mode, concept library, quiz and mock paper.",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "python -m http.server 5173",
+    "validate": "node tools/validate.mjs",
+    "check-excluded": "node tools/check-excluded.mjs && node tools/check-excluded.mjs --selftest",
+    "test": "node tools/validate.mjs && node tools/check-excluded.mjs && node tools/check-excluded.mjs --selftest"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "devDependencies": {
     "katex": "^0.16.47"
   }

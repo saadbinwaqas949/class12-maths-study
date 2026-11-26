@@ -16,7 +16,7 @@ R: The distance from $(x_1,y_1)$ to the line $ax+by+c=0$ is $\dfrac{|ax_1+by_1+c
 F: $$d=\frac{|ax_1+by_1+c|}{\sqrt{a^2+b^2}}$$
 B: Substitute the point into the left side of the line's equation, take the absolute value, and divide by $\sqrt{a^2+b^2}$.
 This is the key tool for tangency: a line **touches** a circle exactly when its distance from the centre equals the radius.
-E: Distance from $(2,1)$ to $3x-4y+13=0$: $\frac{|6-4+13|}{5}=3$.
+E: Distance from $(1,-2)$ to $4x+3y+7=0$: $\frac{|4-6+7|}{5}=1$.
 
 #C u6-circle-standard Circle: standard form
 pre: f-coord
@@ -48,7 +48,7 @@ R: The circle with diameter from $(x_1,y_1)$ to $(x_2,y_2)$ is $(x-x_1)(x-x_2)+(
 F: $$(x-x_1)(x-x_2)+(y-y_1)(y-y_2)=0$$
 B: The angle in a semicircle is a right angle, so for any point $P$ on the circle, $PA\perp PB$; writing $m_{PA}\cdot m_{PB}=-1$ and clearing fractions gives the formula.
 Alternatively: centre = midpoint of the diameter, radius = half its length.
-E: Ends $(3,4)$ and $(2,-7)$: $(x-3)(x-2)+(y-4)(y+7)=0\Rightarrow x^2+y^2-5x+3y-22=0$.
+E: Ends $(1,2)$ and $(5,6)$: $(x-1)(x-5)+(y-2)(y-6)=0\Rightarrow x^2+y^2-6x-8y+17=0$.
 
 #C u6-circle-conditions Finding a circle from given conditions
 pre: u6-circle-general, f-linear-eq, u6-perp-distance
@@ -61,7 +61,7 @@ B: Useful translations:
 - **touches the $x$-axis**: $r=|k|$; **touches the $y$-axis**: $r=|h|$;
 - **passes through two points**: the centre lies on the perpendicular bisector of the chord joining them.
 X: With three points, subtract the equations in pairs: the constant $c$ cancels, leaving two linear equations in $g$ and $f$.
-E: Circle of radius $a$ in the second quadrant touching both axes: centre $(-a,a)$, so $(x+a)^2+(y-a)^2=a^2$.
+E: Centre $(2,-3)$ and touching the $x$-axis: $r=|k|=3$, so $(x-2)^2+(y+3)^2=9$.
 M: Writing the centre as $(g,f)$ instead of $(-g,-f)$.
 
 #C u6-circle-tangent Tangent and normal to a circle at a point
@@ -71,7 +71,7 @@ F: $$x^2+y^2=r^2:\ xx_1+yy_1=r^2;\qquad \text{general: } xx_1+yy_1+g(x+x_1)+f(y+
 B: **Rule for writing the tangent:** replace $x^2\to xx_1$, $y^2\to yy_1$, $x\to\frac{x+x_1}2$, $y\to\frac{y+y_1}2$, and keep the constant.
 The **normal** always passes through the centre, so it is the line joining the point of contact to the centre.
 X: Derivation: implicit differentiation gives slope $-\frac{x_1+g}{y_1+f}$ at $(x_1,y_1)$; point-slope form plus the fact that the point lies on the circle gives the formula.
-E: $x^2+y^2=8$ at $(2,2)$: tangent $2x+2y=8\Rightarrow x+y=4$; normal: through $(0,0)$ and $(2,2)$: $y=x$.
+E: $x^2+y^2=10$ at $(1,3)$: tangent $x+3y=10$; normal: through $(0,0)$ and $(1,3)$: $y=3x$.
 M: Using the tangent formula at a point that is not on the circle.
 
 #C u6-tangency Condition for a line to touch a curve
@@ -81,7 +81,7 @@ F: $$\text{circle } x^2+y^2=a^2:\ c^2=a^2(1+m^2);\quad \text{parabola } y^2=4ax:
 B: Substituting $y=mx+c$ into a conic gives a quadratic in $x$. Its discriminant decides: $D>0$ two points (secant), $D=0$ one point (tangent), $D<0$ no points.
 For a circle the quicker test is: distance from the centre to the line $=$ radius.
 X: **Tangents with a given slope** $m$: just use $c=\pm a\sqrt{1+m^2}$ (circle at origin) and write $y=mx\pm a\sqrt{1+m^2}$. For a circle not at the origin, write the line as $y=mx+c$ (or $3x-4y+k=0$ for a given direction) and use distance $=$ radius.
-E: Tangents to $x^2+y^2=4$ at $45^\circ$: $m=1$, $c=\pm2\sqrt2$: $y=x\pm2\sqrt2$.
+E: Tangents to $x^2+y^2=9$ with slope $2$: $c=\pm3\sqrt{1+4}=\pm3\sqrt5$, so $y=2x\pm3\sqrt5$.
 M: Forgetting the $\pm$: there are always two parallel tangents.
 
 #C u6-point-position Position of a point and length of a tangent
@@ -103,8 +103,8 @@ B: **Definition:** distance to the focus $=$ distance to the directrix. With foc
 Elements: the **vertex** is midway between focus and directrix; the **axis** passes through the focus perpendicular to the directrix; the **latus rectum** is the focal chord perpendicular to the axis, of length $4a$, with ends $(a,\pm2a)$.
 Parametric form: $x=at^2,\ y=2at$.
 X: To find a parabola from a focus and directrix that are not standard, use the definition directly: $(\text{distance to focus})^2=(\text{distance to directrix})^2$.
-E: $y^2=12x$: $4a=12\Rightarrow a=3$: focus $(3,0)$, directrix $x=-3$.
-M: In $y^2=12x$, $a$ is $3$ (a quarter of 12), not 12.
+E: $y^2=20x$: $4a=20\Rightarrow a=5$: focus $(5,0)$, directrix $x=-5$.
+M: In $y^2=20x$, $a$ is $5$ (a quarter of 20), not 20.
 
 #C u6-parabola-shifted Parabolas with vertex $(h,k)$
 pre: u6-parabola, f-complete-square
@@ -120,7 +120,7 @@ R: The tangent to $y^2=4ax$ at $(x_1,y_1)$ is $yy_1=2a(x+x_1)$; the line $y=mx+c
 F: $$yy_1=2a(x+x_1),\qquad c=\frac am,\qquad \text{contact point }\Big(\frac{a}{m^2},\frac{2a}{m}\Big)$$
 B: Slope at $(x_1,y_1)$ by implicit differentiation: $2yy'=4a\Rightarrow y'=\frac{2a}{y_1}$. The normal has slope $-\frac{y_1}{2a}$.
 For other parabolas, differentiate the given equation directly and use point-slope form.
-E: At $(at^2,2at)$: tangent $ty=x+at^2$; normal $y=-tx+2at+at^3$.
+E: $y^2=8x$ at $(2,4)$: here $a=2$, so the tangent is $4y=4(x+2)$, i.e. $y=x+2$, and the normal (slope $-1$) is $x+y=6$.
 
 #C u6-ellipse Ellipse: definition and key features
 pre: f-coord
@@ -131,7 +131,7 @@ If the larger denominator is under $y^2$, the major axis is vertical: $\frac{x^2
 Definition: $|PF|+|PF'|=2a$ for every point $P$ on the ellipse. Parametric form: $(a\cos\theta,\ b\sin\theta)$.
 X: $c=ae$ and $b^2=a^2(1-e^2)$ are handy when the eccentricity is given.
 A circle is the special case $a=b$ ($e=0$).
-E: $4x^2+9y^2=36\Rightarrow\frac{x^2}9+\frac{y^2}4=1$: $a=3,b=2,c=\sqrt5$, $e=\frac{\sqrt5}3$, foci $(\pm\sqrt5,0)$.
+E: $\frac{x^2}{25}+\frac{y^2}{9}=1$: $a=5,b=3,c=4$, $e=\frac45$, foci $(\pm4,0)$, directrices $x=\pm\frac{25}4$.
 M: For an ellipse $c^2=a^2-b^2$ (minus); for a hyperbola it is plus.
 
 #C u6-ellipse-shifted Ellipses with centre $(h,k)$
@@ -147,7 +147,7 @@ R: $y=mx+c$ touches $\frac{x^2}{a^2}+\frac{y^2}{b^2}=1$ iff $c^2=a^2m^2+b^2$; th
 F: $$c^2=a^2m^2+b^2,\qquad \frac{xx_1}{a^2}+\frac{yy_1}{b^2}=1$$
 B: If $c^2<a^2m^2+b^2$ the line cuts the ellipse in two points (secant); if $c^2>a^2m^2+b^2$ it misses it.
 **Closest distance from an ellipse to a line** that does not meet it: find the tangents parallel to the line; the nearer tangent's distance from the line is the minimum distance.
-E: $y=2x+k$ touches $\frac{x^2}9+y^2=1$ when $k^2=9\cdot4+1=37$.
+E: $y=x+c$ touches $\frac{x^2}{4}+\frac{y^2}{2}=1$ when $c^2=4\cdot1+2=6$, i.e. $c=\pm\sqrt6$.
 
 #C u6-hyperbola Hyperbola: definition and key features
 pre: f-coord
@@ -156,8 +156,8 @@ F: $$\frac{x^2}{a^2}-\frac{y^2}{b^2}=1,\quad c^2=a^2+b^2,\quad e=\frac ca,\quad 
 B: The **transverse axis** (length $2a$) joins the vertices; the **conjugate axis** has length $2b$. The positive term tells you the direction: if $y^2$ is positive, $\frac{y^2}{a^2}-\frac{x^2}{b^2}=1$ opens up and down, with foci $(0,\pm c)$ and directrices $y=\pm\frac ae$.
 Unlike an ellipse, $a$ need not be larger than $b$; $a$ is always under the **positive** term.
 Definition: $\big||PF|-|PF'|\big|=2a$. Parametric form $(a\sec\theta,\ b\tan\theta)$.
-X: $b^2=a^2(e^2-1)$. A **rectangular** hyperbola has $a=b$, so $e=\sqrt2$ and perpendicular asymptotes.
-E: $\frac{x^2}{36}-\frac{y^2}{64}=1$: $a=6,b=8,c=10$, $e=\frac53$, directrices $x=\pm\frac{18}5$.
+X: $b^2=a^2(e^2-1)$, so $e$ together with $a$ is enough to find $b$.
+E: $\frac{x^2}{16}-\frac{y^2}{9}=1$: $a=4,b=3,c=5$, $e=\frac54$, directrices $x=\pm\frac{16}5$, asymptotes $y=\pm\frac34x$.
 M: Using $c^2=a^2-b^2$ (the ellipse rule) for a hyperbola.
 
 #C u6-hyperbola-shifted Hyperbolas with centre $(h,k)$
@@ -171,14 +171,13 @@ E: Foci $(4,-3),(4,7)$ and a vertex $(4,5)$: centre $(4,2)$, $c=5$, $a=3$, $b^2=
 pre: u6-hyperbola, u6-tangency
 R: $y=mx+c$ touches $\frac{x^2}{a^2}-\frac{y^2}{b^2}=1$ iff $c^2=a^2m^2-b^2$; tangent at $(x_1,y_1)$: $\frac{xx_1}{a^2}-\frac{yy_1}{b^2}=1$; normal: $\frac{a^2x}{x_1}+\frac{b^2y}{y_1}=a^2+b^2$.
 F: $$c^2=a^2m^2-b^2,\qquad \frac{xx_1}{a^2}-\frac{yy_1}{b^2}=1,\qquad \frac{a^2x}{x_1}+\frac{b^2y}{y_1}=a^2+b^2$$
-B: The normal at $(x_1,y_1)$ has slope $-\frac{a^2y_1}{b^2x_1}$. In parametric form, at $(a\sec\theta,b\tan\theta)$ this slope is $-\frac ab\sin\theta$, which always lies strictly between $-\frac ab$ and $\frac ab$.
+B: The normal at $(x_1,y_1)$ has slope $-\frac{a^2y_1}{b^2x_1}$. For any point on the hyperbola, $\frac{y_1^2}{b^2}=\frac{x_1^2}{a^2}-1<\frac{x_1^2}{a^2}$, so $\left|\frac{y_1}{x_1}\right|<\frac ba$ and every normal has a slope strictly between $-\frac ab$ and $\frac ab$.
 E: Tangents to $2x^2-3y^2=24$ through $(2,-4)$: $\frac{x^2}{12}-\frac{y^2}8=1$, so $y=mx\pm\sqrt{12m^2-8}$; substituting the point gives $m=3$ or $m=-1$.
 
 #C u6-applications Conics in real life
 pre: u6-parabola, u6-ellipse
-R: Parabolic reflectors send rays from the focus out parallel to the axis; planets and satellites move in ellipses with the central body at a focus; suspension-bridge cables hang (approximately) as parabolas.
+R: Parabolic reflectors send rays from the focus out parallel to the axis, parabolic arches and suspension-bridge cables follow parabolas, and a loop of string around two stakes traces an ellipse.
 B: - **Reflector / dish:** put the vertex at the origin, use $y^2=4ax$, and the bulb or receiver goes at the focus $(a,0)$.
-- **Orbit:** for an ellipse with the planet at a focus, the closest distance is $a-c$ and the farthest is $a+c$.
 - **Arch or cable:** put the vertex at a convenient origin, write $x^2=\pm4ay$ or $(x-h)^2=-4a(y-k)$, and use a known point (such as the end of the span) to find $a$.
 - **Gardener's ellipse:** two stakes at the foci and a loop of string of length $2a+2c$ trace an ellipse.
 E: A flashlight reflector $x=\frac{y^2}{20}$ is $y^2=20x$, so $4a=20$, $a=5$: the bulb goes at $(5,0)$.
@@ -660,7 +659,7 @@ C: u6-hyperbola-tangent
 S: The point must be on the hyperbola: $\dfrac{x_1^2}9-\dfrac{1}{16}\cdot\dfrac{1024x_1^2}{81}=1\Rightarrow\dfrac{9x_1^2-64x_1^2}{81}=1\Rightarrow x_1^2=-\dfrac{81}{55}$.
 !:
 S: There is no real $x_1$, so **no normal** of this hyperbola has slope 2.
-S: Reason: at $(3\sec\theta,4\tan\theta)$ the normal's slope is $-\tfrac34\sin\theta$, which always lies between $-\tfrac34$ and $\tfrac34$. A slope of $2$ is impossible.
+S: Reason: on this hyperbola $\dfrac{y_1^2}{16}=\dfrac{x_1^2}{9}-1<\dfrac{x_1^2}{9}$, so $\left|\dfrac{y_1}{x_1}\right|<\dfrac43$, and the size of the normal's slope, $\dfrac{9}{16}\left|\dfrac{y_1}{x_1}\right|$, is always less than $\dfrac{9}{16}\cdot\dfrac43=\dfrac34$. A slope of $2$ is impossible.
 N: Some answer keys list $5y=10x\pm14$ here; substituting shows these lines are not normal to this hyperbola.
 A: No such normal exists (every normal has slope between $-\frac34$ and $\frac34$).
 
@@ -777,12 +776,12 @@ E: $4+9+4-9-10=-2<0$.
 
 #M
 c: u6-parabola
-Q: The focus of $y^2=12x$ is
-O*: $(3,0)$
-O: $(12,0)$
-O: $(0,3)$
-O: $(-3,0)$
-E: $4a=12\Rightarrow a=3$.
+Q: The focus of $y^2=8x$ is
+O*: $(2,0)$
+O: $(8,0)$
+O: $(0,2)$
+O: $(-2,0)$
+E: $4a=8\Rightarrow a=2$.
 
 #M
 c: u6-parabola
@@ -858,12 +857,12 @@ E: For large $x$, $\frac{y^2}{x^2}\to\frac{b^2}{a^2}$.
 
 #M
 c: u6-hyperbola
-Q: The eccentricity of a rectangular hyperbola is
-O: $1$
-O*: $\sqrt2$
-O: $2$
-O: $\frac{1}{\sqrt2}$
-E: $a=b$ gives $c^2=2a^2$, so $e=\sqrt2$.
+Q: The length of the transverse axis of $\frac{x^2}{a^2}-\frac{y^2}{b^2}=1$ is
+O: $2b$
+O*: $2a$
+O: $a+b$
+O: $2c$
+E: The vertices are $(\pm a,0)$, so the transverse axis has length $2a$.
 
 #M
 c: u6-hyperbola

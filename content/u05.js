@@ -20,7 +20,7 @@ pre: u5-line-forms, f-trig-ratios
 R: To put $ax+by+c=0$ in normal form, move $c$ to the right, then divide by $\pm\sqrt{a^2+b^2}$, choosing the sign that makes the right side positive.
 F: $$ax+by=-c\ \Longrightarrow\ \frac{a}{\pm\sqrt{a^2+b^2}}\,x+\frac{b}{\pm\sqrt{a^2+b^2}}\,y=\frac{-c}{\pm\sqrt{a^2+b^2}}$$
 B: In $x\cos\alpha+y\sin\alpha=p$ the coefficients must satisfy $\cos^2\alpha+\sin^2\alpha=1$; dividing by $\sqrt{a^2+b^2}$ achieves exactly that. The right side $p$ is a distance, so it must be **positive**: if $-c$ is negative, divide by $-\sqrt{a^2+b^2}$ instead.
-E: $x-2y+4=0\Rightarrow x-2y=-4\Rightarrow -x+2y=4$. Divide by $\sqrt5$: $-\frac1{\sqrt5}x+\frac2{\sqrt5}y=\frac4{\sqrt5}$. So $p=\frac4{\sqrt5}$, $\cos\alpha=-\frac1{\sqrt5}$, $\sin\alpha=\frac2{\sqrt5}$.
+E: $x+y+2=0\Rightarrow x+y=-2\Rightarrow -x-y=2$. Divide by $\sqrt2$: $-\frac1{\sqrt2}x-\frac1{\sqrt2}y=\sqrt2$. So $p=\sqrt2$ and $\cos\alpha=\sin\alpha=-\frac1{\sqrt2}$, i.e. $\alpha=225^\circ$.
 M: Leaving a negative number on the right; $p$ must be positive.
 
 #C u5-triangle-lines Medians, altitudes and right bisectors
@@ -33,7 +33,7 @@ B: | line | passes through | slope |
 | right bisector of $BC$ | midpoint of $BC$ | $-\frac1{m_{BC}}$ |
 Then use the point-slope form. The three medians meet at the centroid, the three altitudes at the orthocentre, and the three right bisectors at the circumcentre.
 X: If a side is horizontal, its altitude and right bisector are vertical lines $x=k$; if it is vertical, they are horizontal $y=k$.
-E: For $X(1,3),Y(5,7),Z(-3,9)$: $m_{YZ}=-\frac14$, so the altitude from $X$ has slope $4$: $y-3=4(x-1)\Rightarrow4x-y-1=0$.
+E: For $A(0,0),B(4,2),C(2,6)$: $m_{BC}=\frac{6-2}{2-4}=-2$, so the altitude from $A$ has slope $\frac12$: $y=\frac12x\Rightarrow x-2y=0$.
 M: Using the altitude's slope for a median (a median is not perpendicular to anything in general).
 
 #C u5-concurrency Concurrency of three lines
@@ -43,7 +43,7 @@ F: $$\begin{vmatrix}a_1&b_1&c_1\\a_2&b_2&c_2\\a_3&b_3&c_3\end{vmatrix}=0$$
 B: Two ways to test or use concurrency:
 1. **Determinant:** expand it; zero means concurrent.
 2. **Intersection:** solve two of the equations together and check whether the point satisfies the third. This is also how you find the point of concurrency, or an unknown constant $k$ that makes the lines concurrent.
-E: $x+y-4=0$ and $2x-y+1=0$ meet at $(1,3)$. For $kx+2y-10=0$ to pass through it: $k+6-10=0\Rightarrow k=4$.
+E: $x+y-5=0$ and $x-y-1=0$ meet at $(3,2)$. For $kx+y-8=0$ to pass through it: $3k+2-8=0\Rightarrow k=2$.
 M: The determinant test needs the equations in the form $ax+by+c=0$ (everything on one side).
 
 #C u5-family Family of lines through an intersection
@@ -102,7 +102,7 @@ M: Using the coefficient of $xy$ (6) instead of $h=3$.
 pre: f-coord
 R: The inclination $\alpha$ is the angle from the positive $x$-axis to the line, measured anticlockwise; slope $m=\tan\alpha$.
 B: Find the slope from two points, then $\alpha=\tan^{-1}m$ (add $180^\circ$ if $m<0$). Real-life "tilt" or "gradient angle" questions are exactly this.
-E: Through $(-2,-1)$ and $(3,4)$: $m=\frac55=1$, so $\alpha=45^\circ$.
+E: Through $(1,4)$ and $(3,2)$: $m=\frac{2-4}{3-1}=-1$, so $\alpha=180^\circ-45^\circ=135^\circ$.
 `);
 
 M12.addQuestions(5, String.raw`
@@ -437,12 +437,12 @@ E: Slope $=-\frac ab=-\frac{3}{-4}=\frac34$.
 
 #M
 c: u5-line-forms
-Q: The intercept form of $2x+3y-6=0$ is
-O: $\frac x2+\frac y3=1$
-O*: $\frac x3+\frac y2=1$
-O: $2x+3y=1$
+Q: The intercept form of $3x+2y-6=0$ is
+O: $\frac x3+\frac y2=1$
+O*: $\frac x2+\frac y3=1$
+O: $3x+2y=1$
 O: $\frac x6+\frac y6=1$
-E: The intercepts are $x=3$ and $y=2$.
+E: The intercepts are $x=2$ and $y=3$.
 
 #M
 c: u5-normal-form
@@ -500,12 +500,12 @@ E: Then $1+m_1m_2=0$ and $\tan\theta$ is undefined.
 
 #M
 c: u5-angle-lines
-Q: The angle from the line of slope $3$ to the line of slope $-2$ is
+Q: The angle from the line of slope $\frac12$ to the line of slope $3$ is
 O*: $45^\circ$
 O: $135^\circ$
 O: $90^\circ$
 O: $30^\circ$
-E: $\tan\theta=\frac{-2-3}{1-6}=1$.
+E: $\tan\theta=\frac{3-\frac12}{1+\frac32}=1$.
 
 #M
 c: u5-triangle-area

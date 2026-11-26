@@ -7,8 +7,8 @@ B: **Order**: look for the highest derivative. $y'''$ makes the order 3.
 **Degree**: the exponent of that highest-order derivative, *after* clearing radicals and fractions in the derivatives. If a derivative sits inside a function such as $\sin(y')$, $e^{y'}$ or $\ln y''$, the equation is not a polynomial in the derivatives and the degree is **not defined**.
 Functions of $x$ or $y$ themselves (like $e^y\sin x$) do not affect the degree.
 X: First-order, first-degree equations can be written $\frac{dy}{dx}=f(x,y)$ or $M(x,y)\,dx+N(x,y)\,dy=0$. Unit 4 studies two kinds: separable and homogeneous.
-E: $(y'')^3+y'=1$: highest derivative $y''$ (order 2), raised to the power 3 (degree 3).
-E: $y''+\sin(y')=0$: order 2; degree not defined because $y'$ is inside $\sin$.
+E: $(y''')^2+(y')^4=x$: highest derivative $y'''$ (order 3), raised to the power 2 (degree 2).
+E: $e^{y''}+y=x$: order 2; degree not defined because $y''$ is inside the exponential.
 M: The degree is the power of the **highest-order** derivative, not the largest power anywhere.
 
 #C u4-solution Solutions, general solutions and initial value problems
@@ -17,7 +17,7 @@ R: A solution is a function that satisfies the equation. The general solution of
 B: Solving $\frac{dy}{dx}=f(x,y)$ means finding every $y$ that makes the equation true. Because integration produces a constant, the general solution is a whole family of curves.
 An **initial value problem (IVP)** gives one point $(x_0,y_0)$ on the curve; substitute it into the general solution to find the constant.
 X: You can always check a solution by differentiating it and substituting back into the equation.
-E: $\frac{dy}{dx}=x(1+y^2)$, $y(0)=1$: the general solution is $\tan^{-1}y=\frac{x^2}2+C$; at $x=0$, $\tan^{-1}1=\frac\pi4=C$.
+E: $\frac{dy}{dx}=2x$, $y(0)=3$: the general solution is $y=x^2+C$; at $x=0$, $3=C$, so $y=x^2+3$.
 M: Finding $C$ before integrating (the constant appears only after integration).
 
 #C u4-separable Separable equations
@@ -31,7 +31,7 @@ B: **Steps:**
 4. Simplify; if asked, solve for $y$.
 It helps to write the constant as $\ln|C|$ when the other terms are logarithms, so that the answer can be combined: $\ln|y|=\ln|x|+\ln|C|\Rightarrow y=Cx$.
 X: Recognising separability: the right side must factor into (function of $x$) $\times$ (function of $y$). For example $e^{x-y}=e^x\cdot e^{-y}$ is separable, but $\ln x-\ln y$ is a difference, not a product, so it is not separable (it is homogeneous instead).
-E: $\frac{dy}{dx}=2x\sqrt{1-y^2}$: $\frac{dy}{\sqrt{1-y^2}}=2x\,dx\Rightarrow\sin^{-1}y=x^2+C$.
+E: $\frac{dy}{dx}=y\cos x$: $\frac{dy}{y}=\cos x\,dx\Rightarrow\ln|y|=\sin x+C\Rightarrow y=Ae^{\sin x}$.
 M: Writing two constants, one on each side. One is enough.
 
 #C u4-homogeneous Homogeneous equations
@@ -48,27 +48,19 @@ X: Why $v+xv'$? Differentiate $y=vx$ with the product rule: $y'=v\cdot1+x\cdot v
 E: $\frac{dy}{dx}=\frac{x+y}{y-x}=\frac{1+v}{v-1}$. Then $v+xv'=\frac{1+v}{v-1}$ gives $xv'=\frac{1+2v-v^2}{v-1}$, which separates.
 M: Forgetting the $v$ in $v+xv'$, so the $v$ terms do not cancel properly.
 
-#C u4-modelling Writing a differential equation from a situation
-pre: u4-de-basics
-R: "The rate of change of $P$ is proportional to $P$" means $\frac{dP}{dt}=kP$; translate each phrase of the situation into a derivative and a law.
-B: Key translations:
-- *rate of change of $N$* $\to\frac{dN}{dt}$;
-- *proportional to* $\to$ multiply by a constant $k$;
-- *growth*: $k>0$; *decay*: $k<0$ (or write $-k$ with $k>0$).
-Examples: population growth $\frac{dP}{dt}=kP$; Newton's law of cooling $\frac{dT}{dt}=k(T_s-T)$ (rate proportional to the temperature difference with the surroundings); inflation $\frac{dP}{dt}=kP$.
-
 #C u4-growth-decay Growth and decay: $\frac{dN}{dt}=kN$
 pre: u4-separable, f-logs, f-e-number
 R: Separating $\frac{dN}{dt}=kN$ gives $N=N_0e^{kt}$; use the data to find $N_0$ and $k$, then predict.
 F: $$\frac{dN}{dt}=kN\ \Longrightarrow\ N(t)=N_0e^{kt},\qquad k=\frac1t\ln\frac{N(t)}{N_0}$$
-B: **Derivation:** $\frac{dN}N=k\,dt\Rightarrow\ln N=kt+c\Rightarrow N=e^{c}e^{kt}=N_0e^{kt}$, where $N_0=N(0)$.
+B: "The rate of change of $N$ is proportional to $N$" translates to $\frac{dN}{dt}=kN$, with $k>0$ for growth and $k<0$ for decay.
+**Derivation:** $\frac{dN}N=k\,dt\Rightarrow\ln N=kt+c\Rightarrow N=e^{c}e^{kt}=N_0e^{kt}$, where $N_0=N(0)$.
 **Steps for a word problem:**
 1. Choose $t=0$ (often "now" or "initially").
 2. Use one data point to find $k$: $e^{kt}=\frac{N}{N_0}$.
 3. Use the formula to answer the question (future, past or time).
 A useful shortcut: $e^{kt}=\left(e^{k}\right)^t$, so if $e^{5k}=0.9$ then $N(t)=N_0(0.9)^{t/5}$.
-X: Times in the past are negative if $t=0$ is "now". For example, "three hours ago" is $t=-3$.
-E: $N(0)=1000$, $N(5)=900$: $e^{5k}=0.9$, so $N(t)=1000(0.9)^{t/5}$.
+X: Times in the past are negative if $t=0$ is "now". For example, "two hours ago" is $t=-2$.
+E: $N(0)=500$, $N(4)=800$: $e^{4k}=1.6$, so $N(t)=500(1.6)^{t/4}$.
 M: Mixing up which moment is $t=0$.
 
 #C u4-half-life Half-life
@@ -76,14 +68,14 @@ pre: u4-growth-decay
 R: The half-life $T$ is the time for a decaying amount to halve: $m=m_0\left(\frac12\right)^{t/T}$, and the decay constant is $k=\frac{\ln2}{T}$.
 F: $$m(t)=m_0e^{-kt}=m_0\Big(\tfrac12\Big)^{t/T},\qquad k=\frac{\ln2}{T}$$
 B: After one half-life, $\frac12$ remains; after two, $\frac14$; after $n$ half-lives, $\left(\frac12\right)^n$.
-So 160 g with half-life 12 h becomes 80, 40, 20, 10 g after 12, 24, 36, 48 h.
+So 200 g with a half-life of 5 h becomes 100, 50, 25 g after 5, 10, 15 h.
 M: The amount after 3 half-lives is $\frac18$ of the original, not $\frac13$.
 
 #C u4-motion-de Motion as a differential equation
 pre: u4-solution
 R: $\frac{dv}{dt}=a(t)$ and $\frac{ds}{dt}=v(t)$ are first-order differential equations: integrate and use the initial values.
 B: Given the acceleration, integrate once for velocity (use $v(0)$) and again for position (use $s(0)$).
-E: $a=2t-7$, $v(0)=10$: $v=t^2-7t+10$.
+E: $a=6t$, $v(0)=2$: $v=3t^2+2$.
 `);
 
 M12.addQuestions(4, String.raw`
@@ -381,30 +373,30 @@ A: (a) $k=\frac{\ln2}{12}\approx0.0578$ (b) $20$ g (c) $48$ hours.
 M12.addMCQs(4, String.raw`
 #M
 c: u4-de-basics
-Q: The order of $\left(\dfrac{d^2y}{dx^2}\right)^3+\dfrac{dy}{dx}=x$ is
-O: 1
-O*: 2
-O: 3
-O: 6
-E: The highest derivative is the second derivative.
-
-#M
-c: u4-de-basics
-Q: The degree of $\left(\dfrac{d^2y}{dx^2}\right)^3+\dfrac{dy}{dx}=x$ is
+Q: The order of $\left(\dfrac{d^3y}{dx^3}\right)^2+y=x$ is
 O: 1
 O: 2
 O*: 3
-O: not defined
-E: The highest-order derivative is raised to the power 3.
+O: 6
+E: The highest derivative is the third derivative.
 
 #M
 c: u4-de-basics
-Q: The degree of $y''+\sin(y')=0$ is
+Q: The degree of $\left(\dfrac{d^3y}{dx^3}\right)^2+y=x$ is
+O: 1
+O*: 2
+O: 3
+O: not defined
+E: The highest-order derivative is raised to the power 2.
+
+#M
+c: u4-de-basics
+Q: The degree of $e^{y''}+y=0$ is
 O: 1
 O: 2
 O: 0
 O*: not defined
-E: A derivative inside $\sin$ makes the equation non-polynomial in the derivatives.
+E: A derivative inside the exponential makes the equation non-polynomial in the derivatives.
 
 #M
 c: u4-separable
@@ -417,12 +409,12 @@ E: $\frac{dy}y=\frac{dx}x\Rightarrow\ln|y|=\ln|x|+\ln|C|$.
 
 #M
 c: u4-separable
-Q: The solution of $\dfrac{dy}{dx}=e^{x-y}$ is
+Q: The general solution of $\dfrac{dy}{dx}=e^{x+y}$ is
+O*: $e^x+e^{-y}=C$
 O: $e^{x+y}=C$
-O*: $e^y=e^x+C$
+O: $e^y=e^x+C$
 O: $y=x+C$
-O: $e^{-y}=e^x+C$
-E: $e^y\,dy=e^x\,dx$.
+E: $e^{-y}\,dy=e^x\,dx\Rightarrow-e^{-y}=e^x-C$.
 
 #M
 c: u4-homogeneous

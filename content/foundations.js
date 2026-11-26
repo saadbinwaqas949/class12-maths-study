@@ -28,14 +28,14 @@ B: Factorising is expanding in reverse. Try these in order:
 X: **Why splitting the middle term works.** When you expand $(px+q)(rx+s)$ you get $prx^2+(ps+qr)x+qs$. The two middle pieces $ps$ and $qr$ multiply to $pqrs=(pr)(qs)=ac$ and add to $b$. So finding two numbers with product $ac$ and sum $b$ recovers exactly those two hidden pieces.
 How to search: list the factor pairs of $ac$, and check which pair adds (or subtracts, if $ac<0$) to $b$. If $ac<0$, the two numbers have opposite signs; if $ac>0$ and $b<0$, both are negative.
 If no pair works, the quadratic does not factor nicely: use the quadratic formula instead.
-E: Factorise $2x^2+x-3$.
-Here $a=2,\ b=1,\ c=-3$, so $ac=-6$. We need two numbers with product $-6$ and sum $1$: they are $3$ and $-2$.
-Split the middle term: $2x^2+3x-2x-3$.
-Group: $x(2x+3)-1(2x+3)=(2x+3)(x-1)$.
-Check by expanding: $2x^2-2x+3x-3=2x^2+x-3$. ✓
+E: Factorise $3x^2+5x-2$.
+Here $a=3,\ b=5,\ c=-2$, so $ac=-6$. We need two numbers with product $-6$ and sum $5$: they are $6$ and $-1$.
+Split the middle term: $3x^2+6x-x-2$.
+Group: $3x(x+2)-1(x+2)=(x+2)(3x-1)$.
+Check by expanding: $3x^2-x+6x-2=3x^2+5x-2$. ✓
 E: Factorise $x^2-8x+15$. Product $15$, sum $-8$: the numbers are $-3$ and $-5$. So $x^2-3x-5x+15=x(x-3)-5(x-3)=(x-3)(x-5)$.
-E: Factorise $2u^2-3u-9$. Product $ac=-18$, sum $-3$: numbers $-6$ and $3$. $2u^2-6u+3u-9=2u(u-3)+3(u-3)=(u-3)(2u+3)$.
-M: Grouping must leave the *same* bracket twice. If you get $x(2x+3)-1(2x-3)$, recheck the signs.
+E: Factorise $2u^2-7u+3$. Product $ac=6$, sum $-7$: numbers $-6$ and $-1$. $2u^2-6u-u+3=2u(u-3)-1(u-3)=(u-3)(2u-1)$.
+M: Grouping must leave the *same* bracket twice. If you get $3x(x+2)-1(x-2)$, recheck the signs.
 M: Always expand your answer mentally to check it.
 
 #C f-zero-product Zero-product rule
@@ -56,10 +56,10 @@ B: Use the formula when a quadratic will not factorise easily. Write the equatio
 The **discriminant** $D=b^2-4ac$ sits under the square root. A negative number has no real square root, so $D<0$ means no real solutions.
 X: The formula comes from completing the square on $ax^2+bx+c=0$: divide by $a$, move $c/a$ across, add $\left(\tfrac{b}{2a}\right)^2$ to both sides and take square roots.
 In geometry the discriminant decides how a line meets a curve: two points ($D>0$), touching (tangent, $D=0$) or missing ($D<0$). Units 6 and 8 use this a lot.
-E: Solve $x^2-8x+8=0$. Here $a=1,b=-8,c=8$.
-$$x=\frac{8\pm\sqrt{64-32}}{2}=\frac{8\pm\sqrt{32}}{2}=\frac{8\pm4\sqrt2}{2}=4\pm2\sqrt2$$
+E: Solve $x^2-6x+7=0$. Here $a=1,b=-6,c=7$.
+$$x=\frac{6\pm\sqrt{36-28}}{2}=\frac{6\pm\sqrt{8}}{2}=\frac{6\pm2\sqrt2}{2}=3\pm\sqrt2$$
 E: How many real roots has $2x^2+3x+5=0$? $D=9-40=-31<0$, so none.
-M: With $b=-8$, $-b=+8$ and $b^2=64$ (not $-64$).
+M: With $b=-6$, $-b=+6$ and $b^2=36$ (not $-36$).
 M: The whole numerator $-b\pm\sqrt{D}$ is divided by $2a$, not just the square root.
 
 #C f-complete-square Completing the square
@@ -96,7 +96,7 @@ R: Simplify square roots by taking out square factors, and remove roots from a d
 F: $$\sqrt{ab}=\sqrt a\sqrt b,\quad \frac{1}{\sqrt a+\sqrt b}=\frac{\sqrt a-\sqrt b}{a-b}$$
 B: $\sqrt{32}=\sqrt{16\cdot2}=4\sqrt2$. To rationalise $\dfrac{1}{\sqrt{x+1}+\sqrt x}$ multiply top and bottom by the **conjugate** $\sqrt{x+1}-\sqrt x$: the bottom becomes $(x+1)-x=1$.
 X: The conjugate trick is the difference of squares $(p+q)(p-q)=p^2-q^2$ in disguise. It is used in Unit 3 to integrate $\dfrac{1}{\sqrt{x+1}+\sqrt x}$ and in Unit 2 to simplify derivatives.
-E: Simplify $\dfrac{8\pm\sqrt{32}}{2}$: $\sqrt{32}=4\sqrt2$, so it is $\dfrac{8\pm4\sqrt2}{2}=4\pm2\sqrt2$.
+E: Simplify $\dfrac{6\pm\sqrt{8}}{2}$: $\sqrt{8}=2\sqrt2$, so it is $\dfrac{6\pm2\sqrt2}{2}=3\pm\sqrt2$.
 M: $\sqrt{a+b}\neq\sqrt a+\sqrt b$.
 
 #C f-fractions Algebraic fractions
@@ -117,7 +117,7 @@ B: **One equation**: collect the unknown on one side: $3x-2=x+6\Rightarrow 2x=8\
 - *Elimination*: multiply so one variable has equal coefficients, then add or subtract.
 - *Substitution*: make one variable the subject and substitute into the other.
 X: In Unit 3 (partial fractions) and Unit 6 (circle through three points) you solve 2 or 3 simultaneous equations. Subtracting pairs of equations to eliminate the constant term is the standard move.
-E: Solve $x-y=5,\ 2x+y=4$. Adding eliminates $y$: $3x=9\Rightarrow x=3$, then $y=x-5=-2$. So the lines meet at $(3,-2)$.
+E: Solve $x+y=7,\ x-y=1$. Adding eliminates $y$: $2x=8\Rightarrow x=4$, then $y=7-x=3$. So the lines meet at $(4,3)$.
 M: When you multiply an equation to match coefficients, multiply **every** term, including the right-hand side.
 
 #C f-inequalities Inequalities and sign charts
@@ -128,7 +128,7 @@ B: Adding or subtracting keeps the direction. Multiplying or dividing by a **pos
 For a quadratic inequality, factor it, mark the roots on a number line and test the sign in each region. For $(x-1)(x-2)\le0$, the product is negative between the roots, so $1\le x\le2$.
 X: **Interval notation.** $[a,b]$ includes both ends; $]a,b[$ (also written $(a,b)$) excludes them; $[a,\infty[$ means $x\ge a$. A union $\cup$ joins separate pieces, an intersection $\cap$ keeps only the overlap.
 When two conditions must both hold (for example the domain of a logarithm *and* the inequality itself), take the intersection of their solution sets.
-E: Solve $x^2-6x+4<0$. Roots: $x=3\pm\sqrt5$. The parabola opens upward, so it is negative between the roots: $3-\sqrt5<x<3+\sqrt5$.
+E: Solve $x^2-2x-3<0$. Factor: $(x-3)(x+1)<0$. The parabola opens upward, so it is negative between the roots: $-1<x<3$.
 E: Solve $(x-1)(x-3)>0$. Sign chart: positive for $x<1$, negative for $1<x<3$, positive for $x>3$. So $x<1$ or $x>3$.
 M: Multiplying by an unknown $u$ is safe only if you know its sign (for example $u=2^x>0$).
 
@@ -141,7 +141,7 @@ B: Write $y=f(x)$. To find the **domain**, exclude inputs that break the formula
 The **range** is the set of $y$-values actually reached.
 X: **One-to-one** (injective): different inputs always give different outputs. Graphically, every horizontal line meets the graph at most once (the horizontal line test). Only one-to-one functions have inverses.
 **Composite** $f(g(x))$: first apply $g$, then $f$. The chain rule (Unit 2) differentiates composites.
-E: Domain of $f(x)=\sqrt{4-x^2}$: need $4-x^2\ge0\Rightarrow x^2\le4\Rightarrow -2\le x\le2$.
+E: Domain of $f(x)=\sqrt{9-x^2}$: need $9-x^2\ge0\Rightarrow x^2\le9\Rightarrow -3\le x\le3$.
 E: Domain of $g(x)=\dfrac{1}{t-1}+\sqrt{4-t^2}$: $t\ne1$ and $-2\le t\le2$, so $[-2,1)\cup(1,2]$.
 M: The range is not the same as the domain. $f(x)=x^2$ has domain $\R$ but range $[0,\infty)$.
 
@@ -181,7 +181,7 @@ F: $$|x|=\begin{cases}x,& x\ge0\\-x,&x<0\end{cases},\qquad |x-a|=\text{distance 
 B: $|x|$ is never negative. Its graph is a V with the corner at the origin.
 To work with $|x-3|$, split at the point where the inside is zero ($x=3$): it equals $x-3$ for $x\ge3$ and $3-x$ for $x<3$.
 X: Integrals of absolute values (Unit 3) are done by splitting the interval at the points where the inside changes sign, exactly like this.
-E: $|4-x^2|$ equals $4-x^2$ when $-2\le x\le2$ and $x^2-4$ otherwise.
+E: $|x^2-9|$ equals $9-x^2$ when $-3\le x\le3$ and $x^2-9$ otherwise.
 M: $|-x|=|x|$, and $|a+b|$ is not always $|a|+|b|$.
 
 #C f-logs Logarithms and their laws
@@ -196,7 +196,7 @@ X: **Why the product law holds.** Let $\log_ax=p$ and $\log_ay=q$, so $x=a^p$, $
 **Change of base** lets a calculator (which only has $\log$ and $\ln$) find any log: $\log_2 5=\dfrac{\ln5}{\ln2}\approx2.32$.
 **Solving for an exponent:** from $e^{0.02t}=2$, take $\ln$ of both sides: $0.02t=\ln2$.
 E: Solve $2^x=10$: $x=\log_2 10=\dfrac{\ln 10}{\ln2}\approx3.32$.
-E: Simplify $\ln\sqrt{\dfrac{2x-3}{x+1}}=\tfrac12\left[\ln(2x-3)-\ln(x+1)\right]$. This makes differentiating far easier.
+E: Simplify $\ln\sqrt{\dfrac{x+2}{x-1}}=\tfrac12\left[\ln(x+2)-\ln(x-1)\right]$. This makes differentiating far easier.
 M: $\log(x+y)\neq\log x+\log y$. The product law is for $\log(xy)$.
 M: $\ln(e^x)=x$, but $\ln x\cdot\ln y\neq\ln(xy)$.
 
@@ -205,9 +205,9 @@ pre: f-indices
 R: $e\approx2.71828$ is the special base for which $\dfrac{d}{dx}e^x=e^x$; $\ln$ is the logarithm with base $e$.
 F: $$e=\lim_{n\to\infty}\Big(1+\frac1n\Big)^n=1+\frac1{1!}+\frac1{2!}+\frac1{3!}+\cdots\approx2.71828$$
 B: $e^x$ and $\ln x$ are inverse functions: $e^{\ln x}=x$ (for $x>0$) and $\ln(e^x)=x$.
-Natural growth and decay, continuous compounding and almost every calculus formula involving exponentials use base $e$.
-X: The value of $e$ appears from compound interest: investing Rs 1 at 100% a year compounded $n$ times gives $(1+\frac1n)^n$, which approaches $e$ as $n$ grows. That is why continuous compounding uses $A=Pe^{rt}$.
-E: Solve $e^{10k}=\frac53$: take $\ln$: $10k=\ln\frac53\approx0.5108$, so $k\approx0.0511$.
+Natural growth and decay and almost every calculus formula involving exponentials use base $e$.
+X: The value of $e$ appears naturally from the limit $\left(1+\frac1n\right)^n$: for $n=1,10,100,1000$ it gives $2,\ 2.594,\ 2.705,\ 2.717$, getting closer and closer to $e\approx2.718$.
+E: Solve $e^{2k}=3$: take $\ln$: $2k=\ln3\approx1.0986$, so $k\approx0.5493$.
 M: $e$ is a number (like $\pi$), not a variable.
 
 #C f-trig-ratios Trigonometric ratios and standard angles
@@ -267,7 +267,7 @@ They turn squares into first powers, which is what integration needs.
 X: $\tan2A=\dfrac{2\tan A}{1-\tan^2A}$. With $\tan A=x$ this gives $2\tan^{-1}x=\tan^{-1}\dfrac{2x}{1-x^2}$, used in Unit 9.
 $1-\cos2x=2\sin^2x$ and $1+\cos2x=2\cos^2x$ simplify roots: $\sqrt{1-\cos2x}=\sqrt2\,|\sin x|$.
 E: $\int\cos^2x\,dx=\int\frac{1+\cos2x}2\,dx=\frac x2+\frac{\sin2x}4+c$.
-E: $\sin^3x\cos x+\cos^3x\sin x=\sin x\cos x(\sin^2x+\cos^2x)=\tfrac12\sin2x$.
+E: $\cos^4x-\sin^4x=(\cos^2x-\sin^2x)(\cos^2x+\sin^2x)=\cos2x$.
 M: $\sin2A\neq2\sin A$.
 
 #C f-sum-product Product-to-sum and sum-to-product formulas
@@ -277,8 +277,8 @@ F: $$2\sin A\cos B=\sin(A+B)+\sin(A-B),\quad 2\cos A\cos B=\cos(A+B)+\cos(A-B),\
 B: **Product to sum** is used to integrate products like $\sin x\cos7x$.
 **Sum to product** is used in derivatives from first principles ($\sin(x+h)-\sin x$) and to factorise trig equations.
 X: Each formula is just two compound-angle formulas added or subtracted. For example adding $\sin(A+B)$ and $\sin(A-B)$ cancels the $\cos A\sin B$ terms and leaves $2\sin A\cos B$.
-E: $\sin x\cos7x=\tfrac12[\sin8x+\sin(-6x)]=\tfrac12[\sin8x-\sin6x]$.
-M: Watch the sign of $\sin(A-B)$ when $A<B$: $\sin(x-7x)=\sin(-6x)=-\sin6x$.
+E: $\sin2x\cos5x=\tfrac12[\sin7x+\sin(-3x)]=\tfrac12[\sin7x-\sin3x]$.
+M: Watch the sign of $\sin(A-B)$ when $A<B$: $\sin(2x-5x)=\sin(-3x)=-\sin3x$.
 
 #C f-limits Limits and standard limits
 pre: f-functions
@@ -304,8 +304,8 @@ M: The middle term has a **minus** sign in front: $-b_1(\dots)$.
 pre: f-trig-ratios
 R: In a right triangle $(\text{hyp})^2=(\text{opp})^2+(\text{adj})^2$; given one ratio, draw the triangle to find all the others.
 B: If $\tan\alpha=\frac43$ with $\alpha$ acute, draw a right triangle with opposite $4$, adjacent $3$; the hypotenuse is $\sqrt{16+9}=5$. Then $\sin\alpha=\frac45$, $\cos\alpha=\frac35$, etc.
-X: This *triangle method* converts between inverse trigonometric functions: $\cos^{-1}\frac{8}{17}=\sin^{-1}\frac{15}{17}$ because the triangle with adjacent $8$ and hypotenuse $17$ has opposite $\sqrt{289-64}=15$. It is also how angles of elevation are handled in real-life problems.
-E: If $\sin\alpha=\frac7{25}$ ($\alpha$ acute), then the adjacent side is $\sqrt{625-49}=24$, so $\cos\alpha=\frac{24}{25}$ and $\tan\alpha=\frac7{24}$.
+X: This *triangle method* converts between inverse trigonometric functions: $\cos^{-1}\frac{5}{13}=\sin^{-1}\frac{12}{13}$ because the triangle with adjacent $5$ and hypotenuse $13$ has opposite $\sqrt{169-25}=12$. It is also how angles of elevation are handled in real-life problems.
+E: If $\sin\alpha=\frac{8}{17}$ ($\alpha$ acute), then the adjacent side is $\sqrt{289-64}=15$, so $\cos\alpha=\frac{15}{17}$ and $\tan\alpha=\frac{8}{15}$.
 M: The triangle method gives positive ratios; for obtuse or negative angles, fix the signs with the quadrant.
 
 #C f-rounding Rounding and decimal places
