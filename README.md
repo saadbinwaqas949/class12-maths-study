@@ -17,6 +17,7 @@ A study website for **Class 12 Mathematics** (Punjab Curriculum and Textbook Boa
 - **Mock paper**: a full paper on the board pattern built from the included exercise questions, printable, with links to each solution.
 - **Phone and tablet layout** (screens up to 900px wide): a bottom tab bar for the sections; on a question, a bottom bar with Prev / Topics / Next, where the topics open in a sheet that closes with ✕, a tap outside, a downward swipe or the phone's back button. Search opens full width, graphs are drawn on a smaller canvas so their labels stay readable, and a formula too wide for the screen scrolls sideways inside its own box instead of the page.
 - Progress (done, starred, known topics, quiz history) is saved in the browser.
+- Visits are counted with [GoatCounter](https://www.goatcounter.com/) (no cookies, no personal data), one count per visit; the stats are at <https://saad949.goatcounter.com>.
 
 ## Run it
 
